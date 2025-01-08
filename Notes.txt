@@ -1,0 +1,17 @@
+I. Các mốc thời gian quan trọng cần lưu ý để thực hiện bài tập, bài kiểm tra:
+- Slot đầu tiên: Hướng dẫn hoàn thiện bài Lab theo yêu cầu chung: gồm phân tích từng chức năng, xây dựng và vẽ sơ đồ UML để sinh viên theo đó hoàn thành bài tập.
+- Các slot tiếp theo: giải đáp các vấn đề sinh viên vướng mắc, gọi sinh viên lên trình chiếu code, các chức năng đã làm được đồng thời góp ý chung cho cả lớp để rút kinh nghiệm (thông qua quá trình review ghi nhận quá trình làm bài của SV).
+- 02 slot cuối của kế hoạch bài LAB: chấm đánh giá. 
+
+II. Quá trình chấm được thực hiện theo các bước:
+- Sinh viên chạy toàn bộ các chức năng đã làm được.
+- Giảng viên kiểm tra lại kết quả, đồng thời xác định mức độ hiểu và tự làm:
+	+ Yêu cầu chỉ rõ đoạn code, dòng lệnh xử lý chính tương ứng với chức năng đã hiển thị. Thông thường SV có thao tác và tự làm sẽ xác định sau khoảng 2 phút.
+	+ Yêu cầu SV viết thêm 1 chức năng mới dựa trên các chức năng đã có: thay đổi điều kiện sắp xếp, thay đổi các thức tìm kiếm, in danh sách theo điều kiện khác,...
+	+ Căn cứ vào thời gian hoàn thành để đánh giá và cho điểm.
+	+ Nếu SV chưa đạt 50% yêu cầu của bài lab sẽ cho hoàn chỉnh và chấm lại vào tuần 9.
+
+III. Thời gian chấm
+- Lab 1: slot 7-8
+- Lab 2: slot 13-14
+- Lab 3: slot 15-16
