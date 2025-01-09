@@ -47,7 +47,7 @@ public class Mountain {
 
     @Override
     public String toString() {
-        return "Mountain{" + "id=" + id + ", mountainName=" + mountainName + ", province=" + province + ", description=" + description + '}';
+        return String.format("%-4d | %-20s | %-10s | %-4s \n", id, mountainName, province, description);
     }
            
 }

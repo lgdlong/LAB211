@@ -5,10 +5,10 @@ public class Registration {
     private String name;
     private String phoneNumber;
     private String email;
-    private String moutainCode;
+    private int moutainCode;
     private double fee;
 
-    public Registration(String id, String name, String phoneNumber, String email, String moutainCode) {
+    public Registration(String id, String name, String phoneNumber, String email, int moutainCode) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -16,7 +16,7 @@ public class Registration {
         this.moutainCode = moutainCode;
     }
 
-    public Registration(String id, String name, String phoneNumber, String email, String moutainCode, double fee) {
+    public Registration(String id, String name, String phoneNumber, String email, int moutainCode, double fee) {
         this.id = id;
         this.name = name;
         this.phoneNumber = phoneNumber;
@@ -57,13 +57,14 @@ public class Registration {
         this.email = email;
     }
 
-    public String getMoutainCode() {
+    public int getMoutainCode() {
         return moutainCode;
     }
 
-    public void setMoutainCode(String moutainCode) {
+    public void setMoutainCode(int moutainCode) {
         this.moutainCode = moutainCode;
     }
+
 
     public double getFee() {
         return fee;
