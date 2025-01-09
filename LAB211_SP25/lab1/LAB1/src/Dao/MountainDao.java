@@ -8,10 +8,11 @@ import java.util.ArrayList;
 import Model.Mountain;
 
 public class MountainDao {
+    private static String filePath = "src\\Resources\\MountainList.csv";
+    
     public static List<Mountain> getAll() {
         List<Mountain> mountains = new ArrayList<>();
         
-        String filePath = "src\\Resources\\MountainList.csv";
         String line = "";
        
 

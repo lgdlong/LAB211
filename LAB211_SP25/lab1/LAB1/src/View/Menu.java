@@ -1,6 +1,7 @@
 package View;
 
 import Utils.InputData;
+import Service.RegistrationService;
 
 public class Menu {
     public static void mainMenu() {
@@ -13,7 +14,7 @@ public class Menu {
         
         switch (choice) {
             case 1:
-                
+                RegistrationService.createRegistration();
                 break;
             case 2:
                 

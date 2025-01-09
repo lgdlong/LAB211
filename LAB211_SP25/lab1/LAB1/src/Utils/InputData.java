@@ -8,13 +8,12 @@ public class InputData {
     // Will check again this method.
     public static int inputPositiveInt() {
         Scanner sc = new Scanner(System.in);
+        int num;
+        do {
+            num = Integer.parseInt(sc.nextLine());
+        } while (!ValidationData.isPositiveInt(num));
         
-        while(true) {
-            int num = Integer.parseInt(sc.nextLine());
-            if (ValidationData.isPositiveInt(num)) {
-                return num;
-            }
-        }
+        return num;
     }
     
     public static int inputChoice(int min, int max) {
@@ -36,9 +35,9 @@ public class InputData {
         String id;
         
         do {
-            System.out.println("Enter student ID: ");
+            System.out.print("Enter student ID: ");
             id = sc.nextLine().trim();
-        } while (ValidationData.isValidId(id));
+        } while (!ValidationData.isValidId(id));
         
         return id;
     }
@@ -47,9 +46,9 @@ public class InputData {
         Scanner sc = new Scanner(System.in);
         String name;
         do {
-            System.out.println("Enter name: ");
+            System.out.print("Enter name: ");
             name = sc.nextLine().trim();
-        } while (ValidationData.isValidName(name));
+        } while (!ValidationData.isValidName(name));
         
         return name;
     }
@@ -58,9 +57,9 @@ public class InputData {
         Scanner sc = new Scanner(System.in);
         String email;
         do {
-            System.out.println("Enter email: ");
+            System.out.print("Enter email: ");
             email = sc.nextLine().trim();
-        } while (ValidationData.isValidEmail(email));
+        } while (!ValidationData.isValidEmail(email));
         
         return email;
     }
@@ -69,9 +68,9 @@ public class InputData {
         Scanner sc = new Scanner(System.in);
         String phoneNumber;
         do {
-            System.out.println("Enter phone number: ");
+            System.out.print("Enter phone number: ");
             phoneNumber = sc.nextLine().trim();
-        } while (ValidationData.isValidPhoneNumber(phoneNumber));
+        } while (!ValidationData.isValidPhoneNumber(phoneNumber));
         
         return phoneNumber;
     }

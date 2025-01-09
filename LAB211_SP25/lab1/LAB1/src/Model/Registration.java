@@ -14,6 +14,7 @@ public class Registration {
         this.phoneNumber = phoneNumber;
         this.email = email;
         this.moutainCode = moutainCode;
+        setFee();
     }
 
     public Registration(String id, String name, String phoneNumber, String email, int moutainCode, double fee) {
@@ -70,8 +71,18 @@ public class Registration {
         return fee;
     }
 
-    public void setFee(double fee) {
-        this.fee = fee;
+    public void setFee() {
+        String first2Digit = phoneNumber.substring(0, 2);
+        
+        if (first2Digit.equals("03") || first2Digit.equals("08")) {
+            this.fee = 6000000 * 65 /100;
+        } else {
+            this.fee = 6000000;
+        }
+    }
+    
+    public String toStringWriteToCSV() {
+        return String.format("%s, %s, %s, %s, %d, %f", id, name, phoneNumber, email, moutainCode, fee);
     }
 
     @Override

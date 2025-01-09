@@ -36,10 +36,15 @@ public class ValidationData {
             return false;
         }
         
+        if (phoneNumber.length() != 10) {
+            System.out.println("Phone must has 10 digits.");
+            return false;
+        }
+        
         if (phoneNumber.matches(PHONE_NUMBER_REGEX)) {
             return true;
         } else {
-            System.out.println("Invalid phone number. It must start with one of the following prefixes: 03 (Viettel), 05 (Vietnamobile), 07 (Mobifone), 08 (Vinaphone), 09 (Older numbers).");
+            System.out.println("Invalid phone number. It must start with one of the following prefixes: 03 (Viettel), 05 (Vietnamobile), 07 (Mobifone), 08 (Vinaphone-VNPT), 09 (Older numbers).");
             return false;
         }
     }
@@ -56,7 +61,7 @@ public class ValidationData {
         }
     }
     
-    public  static  boolean isPositiveInt(int n) {
+    public static boolean isPositiveInt(int n) {
         if (n < 0) {
             System.out.println("Not positive integer!");
             return false;
