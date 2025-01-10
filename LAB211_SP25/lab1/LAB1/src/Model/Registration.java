@@ -87,7 +87,7 @@ public class Registration {
 
     @Override
     public String toString() {
-        return String.format("%-8s | %-20s | %-12s | %-20s | %-13s | %-7s \n", id, name, phoneNumber, email, moutainCode, fee);
+        return String.format("%-8s | %-20s | %-12s | %-20s | %-13s | %-7s", id, name, phoneNumber, email, moutainCode, fee);
     }
            
 }

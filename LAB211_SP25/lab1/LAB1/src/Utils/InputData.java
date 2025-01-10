@@ -18,13 +18,20 @@ public class InputData {
     
     public static int inputChoice(int min, int max) {
         Scanner sc = new Scanner(System.in);
-        int choice;
+        int choice = -1;
         
         do {
             System.out.print("Enter your choice: ");
-            choice = Integer.parseInt(sc.nextLine());
-            
-        } while (choice < min || choice > max || choice < 0);
+            try {
+                choice = Integer.parseInt(sc.nextLine());
+
+                if (choice < min || choice > max) {
+                    System.out.println("Choice must be between " + min + " and " + max + ".");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input! Please enter a number.");
+            }
+        } while (choice < min || choice > max);
         
         return choice;
     }

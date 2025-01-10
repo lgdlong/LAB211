@@ -1,5 +1,8 @@
 package Utils;
 
+import Model.RegStat;
+import java.util.List;
+
 public class ValidationData {
     private static final String ID_REGEX = "^(SE|HE|DE|QE|CE)\\d{6}$";
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
@@ -32,6 +35,10 @@ public class ValidationData {
     }
     
     public static boolean isValidPhoneNumber(String phoneNumber) {
+        if (!phoneNumber.matches("^\\d{10}$")) {
+            System.out.println("Invalid phone number. Only digits are allowed.");
+        }
+        
         if (phoneNumber.isBlank() || phoneNumber.isEmpty()) {
             return false;
         }
@@ -67,5 +74,14 @@ public class ValidationData {
             return false;
         }
         return true;
+    }
+    
+    public static boolean isCodeExistInRegStatList(int code, List<RegStat> regStatList) {
+        for (RegStat regStat : regStatList) {
+            if (regStat.getMountainCode() == code) {
+                return true;
+            }
+        }
+        return false;
     }
 }

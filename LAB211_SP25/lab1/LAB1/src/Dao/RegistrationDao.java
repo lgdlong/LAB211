@@ -1,7 +1,5 @@
 package Dao;
 
-import static Dao.MountainDao.getMountainByLine;
-import Model.Mountain;
 import Model.Registration;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -11,7 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RegistrationDao {
-    private static String filePath = "src\\Resources\\RegistrationList.csv";
+    private static final String filePath = "src\\Resources\\RegistrationList.csv";
     
     public static List<Registration> getAll() {
         List<Registration> registrations = new ArrayList<>();
@@ -19,15 +17,7 @@ public class RegistrationDao {
         String line = "";
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            // pass a first line
-            String l;
-            if ((l = reader.readLine()) != null) {
-                String[] firstRow = l.split(",\\s*");
-                
-                // 
-                System.out.printf("%-8s | %-20s | %-12s | %-20s | %-4s | %-7s \n", "ID", "Name", "Phone number", "Email", "Mountain Code", "Fee");
-            }
-            
+            reader.readLine(); // pass a first line
             
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",\\s*"); //split data at each line by comma.

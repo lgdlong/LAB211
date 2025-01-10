@@ -8,7 +8,7 @@ import java.util.ArrayList;
 import Model.Mountain;
 
 public class MountainDao {
-    private static String filePath = "src\\Resources\\MountainList.csv";
+    private static final String filePath = "src\\Resources\\MountainList.csv";
     
     public static List<Mountain> getAll() {
         List<Mountain> mountains = new ArrayList<>();
@@ -17,14 +17,7 @@ public class MountainDao {
        
 
         try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            // pass a first line
-            String l;
-            if ((l = reader.readLine()) != null) {
-                String[] firstRow = l.split(",\\s*");
-                
-                System.out.printf("%-4s | %-20s | %-10s | %-4s \n", "Code", "Moutain", "Province", "Description");
-            }
-            
+            reader.readLine(); // pass a first line
             
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",\\s*"); //split data at each line by comma.
@@ -36,6 +29,27 @@ public class MountainDao {
         }
         
         return mountains;
+    }
+    
+    public static Mountain getMoutainByCode(int code) {
+        Mountain m = null;
+        String line = "";
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
+            reader.readLine(); // pass a first line
+            
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",\\s*"); //split data at each line by comma.
+                
+                if ((m = getMountainByLine(row)).getId() == code) {
+                    return m;
+                } // put each moutain in to list
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return m;
     }
     
     public static Mountain getMountainByLine(String[] data) {
