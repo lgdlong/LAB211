@@ -87,7 +87,7 @@ public class Registration {
 
     @Override
     public String toString() {
-        return "Student{" + "id=" + id + ", name=" + name + ", phoneNumber=" + phoneNumber + ", email=" + email + ", moutainCode=" + moutainCode + ", fee=" + fee + '}';
+        return String.format("%-8s | %-20s | %-12s | %-20s | %-13s | %-7s \n", id, name, phoneNumber, email, moutainCode, fee);
     }
            
 }

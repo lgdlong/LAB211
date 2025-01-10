@@ -33,6 +33,14 @@ public class RegistrationService {
         }
     }
     
+    public static void displayAllRegistrations() {
+        List<Registration> registrations = RegistrationDao.getAll();
+        
+        for (Registration r : registrations) {
+            System.out.print(r.toString());
+        }
+    }
+    
     public static void printAllMoutains() {
         List<Mountain> mountains = MountainDao.getAll();
         
