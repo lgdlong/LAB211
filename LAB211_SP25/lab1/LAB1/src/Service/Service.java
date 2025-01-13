@@ -13,6 +13,7 @@ import Repository.RegistrationRepo;
 import Utils.ValidationData;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Comparator;
 
 public class Service {
     
@@ -103,6 +104,29 @@ public class Service {
         displayList(nameReg);
     }
 
+    public static void filterByCampus() {
+        String campus = InputData.inputCampus();
+
+        List<Registration> regCampusList = new ArrayList<>();
+        
+        // filter
+        for (Registration reg : regRepo.getRegistrationList()) {
+            if (regRepo.getCampusForId(reg.getId()).equalsIgnoreCase(campus)) {
+                regCampusList.add(reg);
+            }
+        }
+        
+        // print
+        if (regCampusList.isEmpty()) {
+            System.out.println("No campus registration.");
+        } else {
+            printRegistrationHeader();
+            displayList(regCampusList);
+        }
+    }
+
+
+    
     /**
      * duyet qua tung regis neu moutainCode chua xuat hien trong regStatList: -
      * lay regis.moutainCode, regis.fee gan vao object RegStat va totalRegis++;
@@ -154,12 +178,15 @@ public class Service {
     }
 
     public static void printAllMoutains() {
-        if (mountainRepo.getMountainList().isEmpty()) {
+        if (mountainRepo.getMountainList() == null || mountainRepo.getMountainList().isEmpty()) {
             System.out.println("No mountain found.");
             return;
         }
+
         
         printMountainHeader();
+        Collections.sort(mountainRepo.getMountainList(), 
+                Comparator.comparingInt(Mountain::getId));
         displayList(mountainRepo.getMountainList());
     }
 
@@ -183,7 +210,7 @@ public class Service {
     }
 
     public static void printMountainHeader() {
-        System.out.printf("%-4s | %-20s | %-10s | %-4s\n", "Code", "Moutain", "Province", "Description");
+        System.out.printf("%-4s | %-20s | %-10s | %-50s\n", "Code", "Moutain", "Province", "Description");
     }
 
     public static void printStatHeader() {

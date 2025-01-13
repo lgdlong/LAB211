@@ -4,6 +4,8 @@ import Model.RegStat;
 import Repository.MountainRepo;
 import Repository.RegistrationRepo;
 import Service.Service;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class ValidationData {
@@ -12,7 +14,21 @@ public class ValidationData {
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     private static final String PHONE_NUMBER_REGEX = "^(03|05|07|08|09)\\d{8}$";
     private static final String MOUNTAIN_CODE_REGEX = "^MT\\d+";
+    
+    public static boolean isValidCampus(String campus) {
+        // Define the array of valid campuses
+        String[] campuses = {"CE", "DE", "HE", "SE", "QE"};
 
+        // Check if the input campus exists in the array
+        for (String validCampus : campuses) {
+            if (validCampus.equalsIgnoreCase(campus)) {
+                return true; // Found a match
+            }
+        }
+        return false; // No match found
+    }
+
+    
     public static boolean isYesOrNo(String choice) {
         return choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("n") ||
                 choice.equalsIgnoreCase("yes") || choice.equalsIgnoreCase("no");

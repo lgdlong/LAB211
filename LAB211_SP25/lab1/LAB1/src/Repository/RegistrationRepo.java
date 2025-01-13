@@ -68,4 +68,8 @@ public class RegistrationRepo {
         
         return idList;
     }
+    
+    public String getCampusForId(String id) {
+        return id.substring(0, 2);
+    }
 }

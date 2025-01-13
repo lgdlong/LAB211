@@ -9,6 +9,7 @@ public class Menu {
         do {
             System.out.println("\n==== Main Menu ====");
             System.out.println("1. Register");
+            System.out.println("2. Update registration information");
             System.out.println("3. Display registered list");
             System.out.println("4. Delete registration");
             System.out.println("5. Search registration by name");
@@ -36,7 +37,7 @@ public class Menu {
                     Service.searchByName();
                     break;
                 case 6:
-                    
+                    Service.filterByCampus();
                     break;
                 case 7:
                     Service.registrationStatisticsByLocation();

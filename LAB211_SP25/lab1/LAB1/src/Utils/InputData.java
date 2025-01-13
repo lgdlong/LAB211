@@ -24,7 +24,26 @@ public class InputData {
 
         return choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes");
     }
+    
+    public static String inputCampus() {
+        Scanner scanner = new Scanner(System.in);
+        String campus;
+        
+        // Loop until the user inputs a valid campus code
+        while (true) {
+            System.out.print("Enter a campus code (CE, DE, HE, SE, QE): ");
+            campus = scanner.nextLine().trim();
 
+            // Check if the entered campus is valid
+            if (ValidationData.isValidCampus(campus)) {
+                System.out.println("Valid campus: " + campus);
+                break; // Exit the loop if the campus is valid
+            } else {
+                System.out.println("Invalid campus code. Please try again.");
+            }
+        }
+        return campus;
+    }
     public static int inputChoice(int min, int max) {
         Scanner sc = new Scanner(System.in);
         int choice = -1;
