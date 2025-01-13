@@ -1,0 +1,3 @@
+- chỉ những hàm nào thường xuyên xài mới đặt static. hàm nào thỉnh thoảng xài một lần thì để non-static.
+- thêm repository để thay đổi tất cả trên repo sau đó bấm save lúc cuối cùng.
+- check file not exist thi them vao. 
