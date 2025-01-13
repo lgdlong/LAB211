@@ -1,24 +1,25 @@
 package Model;
 public class RegStat {
-    private int mountainCode;
+    private String mountainCode;
     private String mountainName;
     private int totalRegistration;
     private double totalFee;
 
-    public RegStat(int mountainCode, String mountainName, int totalRegistration, double totalFee) {
+    public RegStat(String mountainCode, String mountainName, int totalRegistration, double totalFee) {
         this.mountainCode = mountainCode;
         this.mountainName = mountainName;
         this.totalRegistration = totalRegistration;
         this.totalFee = totalFee;
     }
 
-    public int getMountainCode() {
+    public String getMountainCode() {
         return mountainCode;
     }
 
-    public void setMountainCode(int mountainCode) {
+    public void setMountainCode(String mountainCode) {
         this.mountainCode = mountainCode;
     }
+
 
     public String getMountainName() {
         return mountainName;
@@ -54,6 +55,6 @@ public class RegStat {
     
     @Override
     public String toString() {
-        return String.format("%-20s | %-22d | %-10.2f", mountainName, totalRegistration, totalFee);
+        return String.format("%-9s | %-22d | %-10.2f", mountainCode, totalRegistration, totalFee);
     }
 }
