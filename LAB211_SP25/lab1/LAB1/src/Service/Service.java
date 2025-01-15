@@ -4,16 +4,16 @@ import Dao.MountainDao;
 import Dao.RegistrationDao;
 import Model.Registration;
 import Utils.InputData;
-import java.util.List;
-
 import Model.Mountain;
 import Model.RegStat;
 import Repository.MountainRepo;
 import Repository.RegistrationRepo;
 import Utils.ValidationData;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.List;
 
 public class Service {
     
@@ -111,7 +111,7 @@ public class Service {
         
         // filter
         for (Registration reg : regRepo.getRegistrationList()) {
-            if (regRepo.getCampusForId(reg.getId()).equalsIgnoreCase(campus)) {
+            if (reg.getCampusForId(reg.getId()).equalsIgnoreCase(campus)) {
                 regCampusList.add(reg);
             }
         }
@@ -125,8 +125,6 @@ public class Service {
         }
     }
 
-
-    
     /**
      * duyet qua tung regis neu moutainCode chua xuat hien trong regStatList: -
      * lay regis.moutainCode, regis.fee gan vao object RegStat va totalRegis++;

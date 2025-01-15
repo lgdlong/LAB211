@@ -1,26 +1,33 @@
 package Dao;
 
-
 import Model.Registration;
 import Repository.RegistrationRepo;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 public class RegistrationDao {
 
-    private static final String filePath = "src\\Resources\\RegistrationList.csv";
+    private static final String FILE_PATH = "src\\Resources\\RegistrationList.csv";
+    private static final File FILE = new File(FILE_PATH);
 
     public List<Registration> getAll() {
         List<Registration> registrations = new ArrayList<>();
 
-        String line = "";
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(filePath))) {
-            reader.readLine(); // pass a first line
+        if (!FILE.exists()) {
+            System.out.println("File not found: " + FILE_PATH);
+            return registrations;
+        }
+        
+        String line;
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            reader.readLine(); // pass header when read
 
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",\\s*"); //split data at each line by comma.
@@ -35,48 +42,70 @@ public class RegistrationDao {
     }
 
     public boolean save(RegistrationRepo regs) {
-        if (regs.getRegistrationList() == null) {
+        // Check FILE is exist or not. If not, create FILE
+        if (!FILE.exists()) {
+            try {
+                FILE.getParentFile().mkdirs();
+                if (FILE.createNewFile()) {
+                    System.out.println("File created at: " + FILE.getAbsolutePath());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+                return false;
+            }
+        }
+        
+        // check null and empty
+        if (regs == null || regs.getRegistrationList() == null || 
+                regs.getRegistrationList().isEmpty()) {
+            
+            System.out.println("No data to save.");
             return false;
         }
         
-        try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, false))) {
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH, false))) {
             writer.write("ID, Name, Phone Number, Email, Mountain Code, Fee");
             
             for (Registration reg : regs.getRegistrationList()) {
-                writer.write("\n");
+                writer.newLine();
                 writer.write(reg.toCSVString());
             }
-            
-            return true;
         } catch(Exception e) {
             e.printStackTrace();
             return false;
         }
         
-        
+        return true;
     }
     
     private Registration getRegistrationByLine(String[] data) {
-        List<String> s = new ArrayList<>();
-
-        // Van de: Neu String[] nha.n va`o ba`ng spit khong co' du? 4 phan tu thi` sao
-        int lengthOfRowNotEmpty = data.length;
-
-        for (int i = 1; i <= 6; i++) {
-            if (i <= lengthOfRowNotEmpty) {
-                s.add(data[i - 1]);
-            } else {
-                s.add("NULL");
-            }
+        if (data.length == 0) {
+            return null;
+        }
+        
+        String[] filledData = new String[6];
+        for (int i = 0; i < 6; i++) {
+            filledData[i] = (i < data.length && !data[i].isBlank()) ? data[i] : "NULL";
         }
 
-        String id = s.getFirst();
-        String name = s.get(1);
-        String phoneNumber = s.get(2);
-        String email = s.get(3);
-        String mountainCode = s.get(4);
-        double fee = Double.parseDouble(s.getLast());
+        String id = filledData[0];
+        String name = filledData[1].trim();
+        String phoneNumber = filledData[2].trim();
+        String email = filledData[3].trim();
+        String mountainCode = filledData[4].trim();
+        // double should not be null, set to 0.0
+        double fee = filledData[5].equals("NULL") ? 0.0 : parseDoubleSafely(filledData[5]);
 
         return new Registration(id, name, phoneNumber, email, mountainCode, fee);
     }
+
+    // with every input invalid, it will be 0.0
+    private double parseDoubleSafely(String value) {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            return 0.0;
+        }
+    }
+
 }

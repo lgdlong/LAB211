@@ -84,6 +84,10 @@ public class Registration {
     public String toCSVString() {
         return String.format("%s, %s, %s, %s, %s, %f", id, name, phoneNumber, email, moutainCode, fee);
     }
+    
+    public String getCampusForId(String id) {
+        return id.substring(0, 2);
+    }
 
     @Override
     public String toString() {

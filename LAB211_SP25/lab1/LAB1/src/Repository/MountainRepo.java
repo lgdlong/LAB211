@@ -2,6 +2,7 @@ package Repository;
 
 import Dao.MountainDao;
 import Model.Mountain;
+import Utils.Color;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -10,7 +11,7 @@ public class MountainRepo {
 
     public MountainRepo() {
         loadData();        
-        System.out.println("Load mountain's repository successful.");
+        System.out.println(Color.ANSI_YELLOW + "Load mountain's repository successful." + Color.ANSI_RESET);
     }
 
     public List<Mountain> getMountainList() {
