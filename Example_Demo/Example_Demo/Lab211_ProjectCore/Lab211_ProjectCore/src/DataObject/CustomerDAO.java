@@ -9,14 +9,17 @@ import java.util.List;
 import java.util.function.Predicate;
 
 public class CustomerDAO implements ICustomerDAO {
+
     private List<Customer> customerList = new ArrayList<>();
-    private final  FileManager fileManager;
-    public CustomerDAO() throws Exception{
-         this.fileManager = new FileManager("Customers.txt");
-         loadDataFromFile();
+    private final FileManager fileManager;
+
+    public CustomerDAO() throws Exception {
+        this.fileManager = new FileManager("Customers.txt");
+        loadDataFromFile();
     }
+
     //--------------------------------------------------   
-    public  void loadDataFromFile() throws Exception {        
+    public void loadDataFromFile() throws Exception {
         String id, name, address;
         List<String> cusData = fileManager.readDataFromFile();
         for (String c : cusData) {
@@ -28,37 +31,44 @@ public class CustomerDAO implements ICustomerDAO {
             customerList.add(newCustomer);
         }
     }
+
     //--------------------------------------------------
     @Override
-    public  List<Customer> getCustomers() throws Exception {      
-        Collections.sort(customerList,(e1,e2)->e1.getId().compareTo(e2.getId()));
-        return customerList;        
+    public List<Customer> getCustomers() throws Exception {
+        Collections.sort(customerList, (e1, e2) -> e1.getId().compareTo(e2.getId()));
+        return customerList;
     }
+
     //--------------------------------------------------
     @Override
     public Customer getCustomerById(String id) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
     //--------------------------------------------------
     @Override
     public void addCustomer(Customer customer) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
     //--------------------------------------------------
     @Override
     public void updateCustomer(Customer customer) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
     //--------------------------------------------------
     @Override
     public void removeCustomer(Customer customer) throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
     //--------------------------------------------------
     @Override
     public void saveCustomerListToFile() throws Exception {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
     //--------------------------------------------------
     @Override
     public List<Customer> search(Predicate<Customer> predicate) throws Exception {
