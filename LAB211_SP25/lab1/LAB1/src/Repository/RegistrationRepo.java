@@ -8,11 +8,15 @@ import java.util.List;
 
 public class RegistrationRepo {
     private List<Registration> registrationList = null;
-
+    private RegistrationDao registrationDao = new RegistrationDao();
     public RegistrationRepo() {
         loadData();
         
         System.out.println(Color.ANSI_YELLOW + "Load registration's repository successful." + Color.ANSI_RESET);
+    }
+    
+    public void loadData() {
+        this.registrationList = registrationDao.getAll();
     }
 
     public List<Registration> getRegistrationList() {
@@ -43,17 +47,12 @@ public class RegistrationRepo {
         return reg;
     }
     
-    public void loadData() {
-        this.registrationList = new RegistrationDao().getAll();
-    }
     
     public Registration getRegistrationById(String id) {
-        for (Registration reg : registrationList) {
-            if (reg.getId().equals(id)) {
-                return reg;
-            }
-        }
-        return null;
+        return registrationList.stream()
+                        .filter(reg -> reg.getId() == id)
+                        .findFirst()
+                        .orElse(null);
     }
     
     public boolean isExistId(String id) {
@@ -74,6 +73,4 @@ public class RegistrationRepo {
         
         return idList;
     }
-    
-    
 }

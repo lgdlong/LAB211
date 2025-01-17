@@ -20,7 +20,6 @@ public class RegStat {
         this.mountainCode = mountainCode;
     }
 
-
     public String getMountainName() {
         return mountainName;
     }
@@ -48,11 +47,11 @@ public class RegStat {
     public void setTotalFee(double totalFee) {
         this.totalFee = totalFee;
     }
-    
+
     public void increTotalFeeBy(double fee) {
         this.totalFee = this.totalFee + fee;
     }
-    
+
     @Override
     public String toString() {
         return String.format("%-9s | %-22d | %-10.2f", mountainCode, totalRegistration, totalFee);

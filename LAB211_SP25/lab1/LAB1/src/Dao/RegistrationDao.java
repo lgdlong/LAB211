@@ -11,11 +11,12 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegistrationDao {
+public class RegistrationDao implements I_RegistrationDao {
 
     private static final String FILE_PATH = "src\\Resources\\RegistrationList.csv";
     private static final File FILE = new File(FILE_PATH);
 
+    @Override
     public List<Registration> getAll() {
         List<Registration> registrations = new ArrayList<>();
 
@@ -41,6 +42,7 @@ public class RegistrationDao {
         return registrations;
     }
 
+    @Override
     public boolean save(RegistrationRepo regs) {
         // Check FILE is exist or not. If not, create FILE
         if (!FILE.exists()) {
@@ -78,6 +80,7 @@ public class RegistrationDao {
         return true;
     }
     
+    @Override
     private Registration getRegistrationByLine(String[] data) {
         if (data.length == 0) {
             return null;

@@ -8,6 +8,7 @@ import java.util.List;
 
 public class MountainRepo {
     private List<Mountain> mountainList = null;
+    private MountainDao mountainDao = new MountainDao();
 
     public MountainRepo() {
         loadData();        
@@ -17,13 +18,16 @@ public class MountainRepo {
     public List<Mountain> getMountainList() {
         return mountainList;
     }
-
-    public void setMountainList(List<Mountain> mountainList) {
-        this.mountainList = mountainList;
-    }
     
     public void loadData() {
-        this.mountainList = new ArrayList<>(MountainDao.getAll());
+        this.mountainList = mountainDao.getAll();
+    }
+    
+    public Mountain getMoutainByCode(int id) {
+        return mountainList.stream()
+                        .filter(mountain -> mountain.getId() == id)
+                        .findFirst()
+                        .orElse(null);
     }
     
     public List<Integer> getCodeList() {

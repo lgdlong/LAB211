@@ -20,8 +20,8 @@ public class Service {
     // REPOSITORIES
     private static RegistrationRepo regRepo = new RegistrationRepo();
     private static MountainRepo mountainRepo = new MountainRepo();
-
-    // METHODS
+    
+    //-----------------------------------------------
     public static void createRegistration() {
         String id = InputData.inputId();
         while (ValidationData.isIdExist(id, regRepo)) {
@@ -51,6 +51,7 @@ public class Service {
         }
     }
 
+    //-----------------------------------------------
     public static void displayAllRegistrations() {
         if (regRepo.getRegistrationList().isEmpty()) {
             System.out.println("No registration found.");
@@ -61,6 +62,7 @@ public class Service {
         displayList(regRepo.getRegistrationList());
     }
     
+    //-----------------------------------------------
     public static void deleteRegistration() {
         String id = InputData.inputId();
         
@@ -83,6 +85,7 @@ public class Service {
         }
     }
     
+    //-----------------------------------------------
     public static void searchByName() {
         String name = InputData.inputName();
 
@@ -103,7 +106,8 @@ public class Service {
         printRegistrationHeader(); // print header
         displayList(nameReg);
     }
-
+    
+    //-----------------------------------------------
     public static void filterByCampus() {
         String campus = InputData.inputCampus();
 
@@ -141,8 +145,7 @@ public class Service {
             if (!ValidationData.isCodeExistInRegStatList(mountainCodeString, regStatList)) {
 
                 // get moutain infor by code first;
-                Mountain m = MountainDao.getMoutainByCode(mountainCodeInt);
-
+                Mountain m = mountainRepo.getMoutainByCode(mountainCodeInt);
                 // create a regStat and add in to list;
                 RegStat r = new RegStat(mountainCodeString, m.getMountainName(), 1, registration.getFee());
                 regStatList.add(r);
@@ -168,13 +171,14 @@ public class Service {
         displayList(regStatList);
     }
 
-    // Generic method
+    //-----------------------------------------------
     private static <T> void displayList(List<T> t) {
         for (T _t : t) {
             System.out.println(_t.toString());
         }
     }
 
+    //-----------------------------------------------
     public static void printAllMoutains() {
         if (mountainRepo.getMountainList() == null || mountainRepo.getMountainList().isEmpty()) {
             System.out.println("No mountain found.");
@@ -188,6 +192,7 @@ public class Service {
         displayList(mountainRepo.getMountainList());
     }
 
+    //-----------------------------------------------
     public static void save() {
         RegistrationDao rDao = new RegistrationDao();
         
@@ -199,23 +204,23 @@ public class Service {
         }
     }
 
-//    public static void updateRegistration(List<Registration> regs) {
-//        REG_DAO.
-//    }
-
+    //-----------------------------------------------
     public static void printRegistrationHeader() {
         System.out.printf("%-8s | %-20s | %-12s | %-20s | %-4s | %-7s\n", "ID", "Name", "Phone number", "Email", "Mountain Code", "Fee");
     }
 
+    //-----------------------------------------------
     public static void printMountainHeader() {
         System.out.printf("%-4s | %-20s | %-10s | %-50s\n", "Code", "Moutain", "Province", "Description");
     }
 
+    //-----------------------------------------------
     public static void printStatHeader() {
         System.out.println("========== Statistics Registration by Location ===========");
         System.out.printf("%-9s | %-22s | %-10s\n", "Peak Name", "Number of Participants", "Total Cost");
     }
 
+    //-----------------------------------------------
     private static RegStat getRegStatByCode(String code, List<RegStat> regStatList) {
         for (RegStat r : regStatList) {
             if (r.getMountainCode() == null ? code == null : r.getMountainCode().equals(code)) {
@@ -225,6 +230,7 @@ public class Service {
         return null;
     }
 
+    //-----------------------------------------------
     public static int getIntByStringMountainCode(String moutainCode) {
         // moutain code format: "^MT//d+"
         return Integer.parseInt(moutainCode.replace("MT", ""));

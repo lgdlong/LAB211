@@ -4,8 +4,6 @@ import Model.RegStat;
 import Repository.MountainRepo;
 import Repository.RegistrationRepo;
 import Service.Service;
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class ValidationData {

@@ -8,12 +8,13 @@ import java.util.ArrayList;
 import Model.Mountain;
 import java.io.File;
 
-public class MountainDao {
+public class MountainDao implements I_MountainDao{
 
     private static final String FILE_PATH = "src\\Resources\\MountainList.csv";
     private static final File FILE = new File(FILE_PATH);
 
-    public static List<Mountain> getAll() {
+    @Override
+    public List<Mountain> getAll() {
         List<Mountain> mountains = new ArrayList<>();
 
         if (!FILE.exists()) {
@@ -38,28 +39,7 @@ public class MountainDao {
         return mountains;
     }
 
-    public static Mountain getMoutainByCode(int code) {
-        Mountain m = null;
-        String line = "";
-
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
-            reader.readLine(); // pass a first line
-
-            while ((line = reader.readLine()) != null) {
-                String[] row = line.split(",\\s*"); //split data at each line by comma.
-
-                if ((m = getMountainByLine(row)).getId() == code) {
-                    return m;
-                } // put each moutain in to list
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
-        return m;
-    }
-
-    private static Mountain getMountainByLine(String[] data) {
+    private Mountain getMountainByLine(String[] data) {
         if (data.length == 0) {
             return null;
         }
