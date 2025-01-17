@@ -80,7 +80,6 @@ public class RegistrationDao implements I_RegistrationDao {
         return true;
     }
     
-    @Override
     private Registration getRegistrationByLine(String[] data) {
         if (data.length == 0) {
             return null;
