@@ -1,5 +1,6 @@
 package Service;
 
+import Dao.I_RegistrationDao;
 import Dao.MountainDao;
 import Dao.RegistrationDao;
 import Model.Registration;
@@ -194,7 +195,7 @@ public class Service {
 
     //-----------------------------------------------
     public static void save() {
-        RegistrationDao rDao = new RegistrationDao();
+        I_RegistrationDao rDao = new RegistrationDao();
         
         // Save and alert.
         if (rDao.save(regRepo)) {
