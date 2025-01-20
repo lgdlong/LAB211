@@ -1,5 +1,7 @@
 package Utils;
 
+import Model.Customer;
+import Model.Order;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -11,18 +13,22 @@ import java.util.Scanner;
  */
 public class InputData {
     
-    // Will check again this method.
     public static int inputPositiveInt(String prompt) {
         Scanner sc = new Scanner(System.in);
-        int num;
+        int num = -1; 
         do {
-            System.out.print(prompt);
-            num = Integer.parseInt(sc.nextLine());
+            try {
+                System.out.print(prompt);
+                num = Integer.parseInt(sc.nextLine());
+                if (!ValidateData.isPositiveInt(num)) {
+                    System.out.println("The number must be positive. Please try again.");
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Invalid input. Please enter a positive integer.");
+            }
         } while (!ValidateData.isPositiveInt(num));
-
         return num;
     }
-    
     public static int inputChoice(String prompt, int min, int max) {
         Scanner sc = new Scanner(System.in);
 
@@ -111,4 +117,16 @@ public class InputData {
 
         return date;
     }
+    
+    public static Customer inputCustomerInfor() {
+        // ENter information
+        String code = inputCusCode("Enter code: ");
+        String name = inputName("Enter name: ");
+        String phone = inputPhone("Enter phone: ");
+        String email = inputEmail("Enter email: ");
+        
+        // Create a customer object
+        return new Customer(code, name, email, phone);
+    }
+    
 }

@@ -22,25 +22,43 @@ public class Service {
     OrderRepository orderRepo = new OrderRepository();
     
     public void registerCustomer() {
-        // ENter information
-        String code = InputData.inputCusCode("Enter code: ");
-        String name = InputData.inputName("Enter name: ");
-        String phone = InputData.inputPhone("Enter phone: ");
-        String email = InputData.inputEmail("Enter email: ");
+        Customer customer = null;
         
-        // Create a customer object
-        Customer customer = new Customer(code, name, email, phone);
+        while (true) {
+            customer = InputData.inputCustomerInfor();
+            if (!cusRepo.isCodeExist(customer.getCode())) {
+                break;
+            } else {
+                System.out.println("Customer code is duplicated!");
+            }
+        }
         
         // Save to repository and alert
         if (cusRepo.add(customer)) {
-            System.out.println("Add customer " + code + " into repo SUCCESSFUL.");
+            System.out.println("Add customer " + customer.getCode() + " into repo SUCCESSFUL.");
         } else {
-            System.out.println("Add customer " + code + " into repo FAIL.");
+            System.out.println("Add customer " + customer.getCode() + " into repo FAIL.");
         }
     }
     
+    
+    /**
+     * Yeu cau nhap id
+     * lay ra customer can sua
+     * nhap lai het thong tin
+     * 
+     * 
+     */
     public void updateCustomerInformation() {
+        System.out.println("Enter new customer information:");
         
+        Customer newCustomer = InputData.inputCustomerInfor();
+        
+        if (update(newCustomer)) {
+            System.out.println("Update customer " + newCustomer.getCode() + " SUCCESSFUL.");
+        } else {
+            System.out.println("Update customer " + newCustomer.getCode() + " FAIL.");
+        }
     }
     
     public void searchCustomerByName() {
@@ -55,12 +73,21 @@ public class Service {
     }
     
     public void createOrder() {
-        String cusCode = InputData.inputCusCode("Enter customer code: ");
-        String feastCode = InputData.inputFeastCode("Enter feast code: ");
-        int numberOfTable = InputData.inputPositiveInt("Enter number of tables: ");
-        LocalDate date = InputData.inputDate("Enter date (yyyy-MM-dd): ");
+        Order order = null;
         
-        Order order = new Order(cusCode, feastCode, numberOfTable, date, feastRepo);
+        while (true) {
+            String cusCode = InputData.inputCusCode("Enter customer code: ");
+            String feastCode = InputData.inputFeastCode("Enter feast code: ");
+            int numberOfTable = InputData.inputPositiveInt("Enter number of tables: ");
+            LocalDate date = InputData.inputDate("Enter date (yyyy-MM-dd): ");
+
+            order = new Order(cusCode, feastCode, numberOfTable, date, feastRepo);
+            if (!orderRepo.isExist(order.getId())) {
+                break;
+            } else {
+                System.out.println("Order is exist!");
+            }
+        }
         
         if (orderRepo.add(order)) {
             System.out.println("Add order to repository SUCCESSFUL.");
@@ -105,6 +132,12 @@ public class Service {
         }
     }
     
+    public void displayFeast() {
+        for (Feast feast : feastRepo.getFeastList()) {
+            System.out.println(feast);
+        }
+    }
+    
     public void displayCustomerHeader() {
         System.out.printf("%-5s | %-20s | %-30s | %-10s\n", "Code", "Name", "Email", "Phone");
     }
@@ -114,9 +147,25 @@ public class Service {
                 "ID", "Customer ID", "Set Menu", "Price", "Tables", "Total Cost");
     }
     
-    public void displayFeast() {
-        for (Feast feast : feastRepo.getFeastList()) {
-            System.out.println(feast);
+    private boolean update(Customer updatedCustomer) {
+        boolean found = false;
+        
+        if (updatedCustomer == null) {
+            System.out.println("Customer cannot be null!");
+            return false;
         }
-    }
+        
+        for (int i = 0; i < cusRepo.getCusList().size(); i++) {
+            if (cusRepo.getCusList().get(i).getCode().equals(updatedCustomer.getCode())) {
+                found = true;
+                cusRepo.getCusList().set(i, updatedCustomer);
+                return true;
+            }
+        }
+        
+        if (!found) {
+            System.out.println("Customer not found!");
+        }
+        return false;
+}
 }

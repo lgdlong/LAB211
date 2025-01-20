@@ -40,11 +40,7 @@ public class OrderRepository implements I_Repository<Order>{
     }
     
     public boolean isExist(String id) {
-        for (Order order : orderList) {
-            if (id.equalsIgnoreCase(order.getId())) {
-                return true;
-            }
-        }
-        return false;
+        return orderList.stream()
+                        .anyMatch(order -> id.equalsIgnoreCase(order.getId()));
     }
 }
