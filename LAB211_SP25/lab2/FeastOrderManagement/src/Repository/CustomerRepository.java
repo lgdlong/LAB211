@@ -2,6 +2,7 @@ package Repository;
 
 import Dao.CustomerDao;
 import Model.Customer;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,6 +15,15 @@ public class CustomerRepository implements I_Repository<Customer>{
     public CustomerRepository() {
         loadData();
         System.out.println("Load customers successful.");
+    }
+    
+    private void loadData() {
+        CustomerDao dao = new CustomerDao();
+        this.cusList = dao.getAll();
+    }
+    
+    public List<Customer> getCusList() {
+        return cusList;
     }
     
     @Override
@@ -40,9 +50,20 @@ public class CustomerRepository implements I_Repository<Customer>{
                 .orElse(null);
     }
 
-    private void loadData() {
-        CustomerDao dao = new CustomerDao();
-        this.cusList = dao.getAll();
+    public List<Customer> getListByName(String name) {
+        List<Customer> nameList = new ArrayList<>();
+        
+        for (Customer cus : cusList) {
+            if (name.equalsIgnoreCase(cus.getName())) {
+                nameList.add(cus);
+            }
+        }
+        
+        return nameList;
+    }
+    
+    public boolean isCodeExist(String code) {
+        return getByCode(code) != null;
     }
 
     

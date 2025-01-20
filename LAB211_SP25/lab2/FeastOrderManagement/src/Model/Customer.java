@@ -51,7 +51,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer{" + "code=" + code + ", name=" + name + ", email=" + email + ", phone=" + phone + '}';
+        return String.format("%-5s | %-20s | %-30s | %-10s", code, name, email, phone);
     }
     
     public String toCSVString() {

@@ -21,6 +21,10 @@ public class FeastRepository implements I_Repository<Feast>{
         feastList = dao.getAll();
     }
 
+    public List<Feast> getFeastList() {
+        return feastList;
+    }
+
     @Override
     public boolean add(Feast item) {
         if (item == null) {

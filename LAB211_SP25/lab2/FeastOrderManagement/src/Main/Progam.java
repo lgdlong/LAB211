@@ -1,11 +1,15 @@
 package Main;
 
-import Repository.FeastRepository;
+import Utils.Menu;
 
 public class Progam {
     public static void main(String[] args) {
-        FeastRepository fr = new FeastRepository();
-        
-        fr.display();
+        run();
+    }
+    
+    private static void run() {
+        Menu menu = new Menu();
+        // print main menu
+        menu.mainMenu();
     }
 }

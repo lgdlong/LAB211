@@ -42,7 +42,13 @@ public class Feast {
     }
 
     public String getIngredient() {
-        return ingredient;
+        String[] paragraph = this.ingredient.split("#");
+        StringBuilder strb = new StringBuilder();
+        for (String s : paragraph) {
+            strb.append(s.trim())
+                .append("\n");
+        }
+        return strb.toString().trim();
     }
 
     public void setIngredient(String ingredient) {
@@ -51,6 +57,15 @@ public class Feast {
 
     @Override
     public String toString() {
-        return "Feast{" + "code=" + code + ", name=" + name + ", price=" + price + ", ingredient=" + ingredient + '}';
+        return String.format("""
+                             -----------------------------------------
+                             Code       : %s
+                             Name       : %s
+                             Price      : %s
+                             Ingredients: 
+                             %s
+                             """,
+                
+                code, name, price, getIngredient());
     }
 }

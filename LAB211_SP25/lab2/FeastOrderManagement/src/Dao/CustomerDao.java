@@ -5,10 +5,13 @@
 package Dao;
 
 import Model.Customer;
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -21,7 +24,51 @@ public class CustomerDao implements I_FullAccessDao<Customer>{
 
     @Override
     public List<Customer> getAll() {
-        return null;
+        List<Customer> cusList = new ArrayList<>();
+        
+        if (!FILE.exists()) {
+            try {
+                FILE.getParentFile().mkdirs();
+                if (FILE.createNewFile()) {
+                    System.out.println("File created at: " + FILE.getAbsolutePath());
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+            String line = reader.readLine();
+            
+            while ((line = reader.readLine()) != null) {
+                String[] row = line.split(",");
+                
+                
+                if (row.length != 4) {
+                    System.out.println("READ CUSTOMERS IN FILE ERROR AT LENGTH!");
+                    continue;
+                }
+                
+                Customer cus = getCustomerByRow(row);
+                if (cus != null) {
+                    cusList.add(cus);
+                }
+                
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        
+        return cusList;
+    }
+    
+    private Customer getCustomerByRow(String[] data) {
+        String code = data[0].trim();
+        String name = data[1].trim();
+        String email = data[2].trim();
+        String phone = data[3].trim();
+        
+        return new Customer(code, name, email, phone);
     }
 
     @Override
