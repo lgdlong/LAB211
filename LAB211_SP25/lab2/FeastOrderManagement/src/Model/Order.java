@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 public class Order {
     private static final DateTimeFormatter FORMATTER = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     
-    private String id;
+    private final String id;
     private String customerCode;
     private String feastCode;
     private int numberOfTables;

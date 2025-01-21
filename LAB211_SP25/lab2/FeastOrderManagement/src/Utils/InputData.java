@@ -1,7 +1,6 @@
 package Utils;
 
 import Model.Customer;
-import Model.Order;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
@@ -12,6 +11,15 @@ import java.util.Scanner;
  * @author LGD
  */
 public class InputData {
+    public static String inputString(String prompt) {
+        Scanner sc = new Scanner(System.in);
+        String id;
+        do {
+            System.out.print(prompt);
+            id = sc.nextLine().trim();
+        } while (!id.isEmpty() && !id.isBlank());
+        return id;
+    }
     
     public static int inputPositiveInt(String prompt) {
         Scanner sc = new Scanner(System.in);
@@ -29,6 +37,7 @@ public class InputData {
         } while (!ValidateData.isPositiveInt(num));
         return num;
     }
+    
     public static int inputChoice(String prompt, int min, int max) {
         Scanner sc = new Scanner(System.in);
 

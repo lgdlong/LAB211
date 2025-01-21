@@ -39,8 +39,14 @@ public class OrderRepository implements I_Repository<Order>{
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
     
-    public boolean isExist(String id) {
+    public Order getById(String id) {
         return orderList.stream()
-                        .anyMatch(order -> id.equalsIgnoreCase(order.getId()));
+                .filter(order -> id.equalsIgnoreCase(order.getId()))
+                .findFirst()
+                .orElse(null);
+    }
+    
+    public boolean isExist(String id) {
+        return getById(id) != null;
     }
 }

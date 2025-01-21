@@ -97,7 +97,34 @@ public class Service {
     }
     
     public void updateOrderInformation() {
-        
+        Order order = null;
+
+        // Enter and check if ID exists
+        String id;
+        do {
+            id = InputData.inputString("Enter order id: ");
+            order = orderRepo.getById(id);
+            if (order == null) {
+                System.out.println("Order ID not found. Please try again.");
+            }
+        } while (order == null);
+
+        // Enter new information
+        String feastCode = InputData.inputFeastCode("Enter new feast id: ");
+        int numberOfTables = InputData.inputPositiveInt("Enter new number of tables: ");
+        LocalDate date = InputData.inputDate("Enter new date: ");
+
+        // Update order
+        order.setFeastCode(feastCode);
+        order.setNumberOfTables(numberOfTables);
+        order.setDate(date);
+
+        // Save updated order
+        if (update(order)) {
+            System.out.println("Update order " + order.getId() + " SUCCESSFUL.");
+        } else {
+            System.out.println("Update order " + order.getId() + " FAIL.");
+        }
     }
     
     public void saveToFile() {
@@ -167,5 +194,27 @@ public class Service {
             System.out.println("Customer not found!");
         }
         return false;
-}
+    }
+    
+    private boolean update(Order order) {
+        boolean found = false;
+        
+        if (order == null) {
+            System.out.println("Order cannot be null!");
+            return false;
+        }
+        
+        for (int i = 0; i < cusRepo.getCusList().size(); i++) {
+            if (orderRepo.getOrderList().get(i).getId().equals(order.getId())) {
+                found = true;
+                orderRepo.getOrderList().set(i, order);
+                return true;
+            }
+        }
+        
+        if (!found) {
+            System.out.println("Order not found!");
+        }
+        return false;
+    }
 }
