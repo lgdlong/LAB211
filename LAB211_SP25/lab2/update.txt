@@ -2,7 +2,7 @@
 - [done] toCSVString nên private hơn, không cần để bên ngoài, để trong dao luôn. 
 - [done] Bỏ mấy cái log đi.
 - [done] Loadata check if getAll is null -> new an object.
-- Thêm I_OrderRepository implement from I_Repo.
-- hàm customerInfor để vào Service luôn.
-- InputString (Update) nếu blank thì lấy thằng cũ bỏ vô.
-- Update search by name (gõ vài từ là ra luôn không cần gõ chính xác toàn bộ name).
+- [khong lam] Thêm I_OrderRepository implement from I_Repo.
+- [done] hàm customerInfor để vào Service luôn.
+- [done] InputString (Update) nếu blank thì lấy thằng cũ bỏ vô.
+- [done] Update search by name (gõ vài từ là ra luôn không cần gõ chính xác toàn bộ name).
