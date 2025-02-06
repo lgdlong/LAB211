@@ -20,7 +20,12 @@ public class ValidateData {
         return true;
     }
     
-    public static boolean isValidName(String name) {
+    public static boolean isValidName(String name, boolean blank) {
+        // can be blank if true
+        if (blank == true && name.isBlank()) {
+            return true;
+        }
+        
         if (name.length() < 2 || name.length() > 25 || 
                 name.isBlank() || name.isEmpty()) {
             System.out.println("Invalid name!");
@@ -30,7 +35,12 @@ public class ValidateData {
         }
     }
     
-    public static boolean isValidCusCode(String code) {
+    public static boolean isValidCusCode(String code, boolean blank) {
+        // can be blank if true
+        if (blank == true && code.isBlank()) {
+            return true;
+        }
+        
         if (code.length() != 5) {
             System.out.println("CODE LENGTH MUST BE 4!");
             return false;
@@ -44,7 +54,12 @@ public class ValidateData {
         }
     }
     
-    public static boolean isValidFeastCode(String code) {
+    public static boolean isValidFeastCode(String code, boolean blank) {
+        // can be blank if true
+        if (blank == true && code.isBlank()) {
+            return true;
+        }
+        
         if (code.length() < 5) {
             return false;
         }
@@ -56,13 +71,14 @@ public class ValidateData {
         }
     }
     
-    public static boolean isValidPhoneNumber(String phoneNumber) {
+    public static boolean isValidPhoneNumber(String phoneNumber, boolean blank) {
+        // can be blank if true
+        if (blank == true && phoneNumber.isBlank()) {
+            return true;
+        }
+        
         if (!phoneNumber.matches("^\\d{10}$")) {
             System.out.println("Invalid phone number. Only digits are allowed.");
-        }
-
-        if (phoneNumber.isBlank() || phoneNumber.isEmpty()) {
-            return false;
         }
 
         if (phoneNumber.length() != 10) {
@@ -78,10 +94,11 @@ public class ValidateData {
         }
     }
     
-    public static boolean isValidEmail(String email) {
-        if (email.isBlank() || email.isEmpty()) {
-            return false;
+    public static boolean isValidEmail(String email, boolean blank) {
+        if (blank == true && email.isBlank()) {
+            return true;
         }
+        
         if (email.matches(EMAIL_REGEX)) {
             return true;
         } else {

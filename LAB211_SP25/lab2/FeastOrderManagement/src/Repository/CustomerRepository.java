@@ -14,12 +14,18 @@ public class CustomerRepository implements I_Repository<Customer>{
     
     public CustomerRepository() {
         loadData();
-        System.out.println("Load customers successful.");
     }
     
     private void loadData() {
         CustomerDao dao = new CustomerDao();
-        this.cusList = dao.getAll();
+        
+        List<Customer> temp = dao.getAll();
+        
+        if (temp == null) {
+            this.cusList = new ArrayList<>();
+        } else {
+            this.cusList = temp;
+        }
     }
     
     public List<Customer> getCusList() {
@@ -54,7 +60,7 @@ public class CustomerRepository implements I_Repository<Customer>{
         List<Customer> nameList = new ArrayList<>();
         
         for (Customer cus : cusList) {
-            if (name.equalsIgnoreCase(cus.getName())) {
+            if (cus.getName().contains(name)) {
                 nameList.add(cus);
             }
         }
@@ -62,9 +68,7 @@ public class CustomerRepository implements I_Repository<Customer>{
         return nameList;
     }
     
-    public boolean isCodeExist(String code) {
+    public boolean isExist(String code) {
         return getByCode(code) != null;
     }
-
-    
 }

@@ -38,6 +38,10 @@ public class Order {
         this.id = generateId();
     }
 
+    public static DateTimeFormatter getFORMATTER() {
+        return FORMATTER;
+    }
+    
     public String getId() {
         return id;
     }
@@ -84,16 +88,6 @@ public class Order {
 
     public void setTotalCost(double totalCost, FeastRepository fr) {
         this.totalCost = numberOfTables * getPriceByFeastCode(feastCode, fr);
-    }
-
-    public String toCSVString() {
-        return String.join(",", 
-                id,
-                customerCode,
-                feastCode,
-                String.valueOf(numberOfTables),
-                date.format(FORMATTER),
-                String.format("%.2f", totalCost));
     }
     
     @Override

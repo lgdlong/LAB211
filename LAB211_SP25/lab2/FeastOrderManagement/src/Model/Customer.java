@@ -51,10 +51,6 @@ public class Customer {
 
     @Override
     public String toString() {
-        return String.format("%-5s | %-20s | %-30s | %-10s", code, name, email, phone);
-    }
-    
-    public String toCSVString() {
-        return String.format("%s,%s,%s,%s", code, name, email, phone);
+        return String.format("%-5s | %-30s | %-30s | %-10s", code, name, email, phone);
     }
 }

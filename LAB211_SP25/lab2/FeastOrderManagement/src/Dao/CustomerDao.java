@@ -1,7 +1,3 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package Dao;
 
 import Model.Customer;
@@ -18,95 +14,79 @@ import java.util.List;
  *
  * @author LGD
  */
-public class CustomerDao implements I_FullAccessDao<Customer>{
-    private static final String FILE_PATH = "src\\Resource\\customers.csv";
-    private final File FILE = new File(FILE_PATH);
+public class CustomerDao implements I_FullAccessDao<Customer> {
+
+    private static final String FILE_PATH = "src" + File.separator + "Resource" + File.separator + "customers.csv";
+    private static final File FILE = new File(FILE_PATH);
+
 
     @Override
     public List<Customer> getAll() {
         List<Customer> cusList = new ArrayList<>();
-        
+
+        // check file is not exist -> create new file
         if (!FILE.exists()) {
             try {
                 FILE.getParentFile().mkdirs();
-                if (FILE.createNewFile()) {
-                    System.out.println("File created at: " + FILE.getAbsolutePath());
-                }
+                FILE.createNewFile();  // Ensure file exists
             } catch (IOException e) {
-                e.printStackTrace();
+                System.err.println("Error creating file: " + e.getMessage());
             }
+            return cusList;  // Return empty list
         }
-        
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
-            String line = reader.readLine();
-            
+
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE))) {
+            String line = reader.readLine(); // Skip header
+
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
-                
-                
+
+                // chatgpt
                 if (row.length != 4) {
-                    System.out.println("READ CUSTOMERS IN FILE ERROR AT LENGTH!");
+                    System.err.println("Invalid row format in customers.csv: " + line);
                     continue;
                 }
-                
-                Customer cus = getCustomerByRow(row);
-                if (cus != null) {
-                    cusList.add(cus);
-                }
-                
+
+                cusList.add(new Customer(row[0].trim(), row[1].trim(), row[2].trim(), row[3].trim()));
             }
-        } catch (Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("Error reading file: " + e.getMessage());
         }
-        
+
         return cusList;
-    }
-    
-    private Customer getCustomerByRow(String[] data) {
-        String code = data[0].trim();
-        String name = data[1].trim();
-        String email = data[2].trim();
-        String phone = data[3].trim();
-        
-        return new Customer(code, name, email, phone);
     }
 
     @Override
     public boolean save(List<Customer> cusList) {
-        // check file exist first
-        if (!FILE.exists()) {
-            try {
-                FILE.getParentFile().mkdirs();
-                if (FILE.createNewFile()) {
-                    System.out.println("File created at: " + FILE.getAbsolutePath());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        
         if (cusList.isEmpty()) {
-            System.out.println("LIST IS EMPTY!");
+            System.err.println("Warning: Attempting to save an empty customer list.");
             return false;
         }
-        
-        try {
-            // Write the list to the file
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
-                writer.write("Code,Name,Email,Phone");
-                
-                for (Customer customer : cusList) {
-                    writer.newLine();
-                    writer.write(customer.toCSVString());
-                }
+
+        try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE))) {
+            writer.write("Code,Name,Email,Phone");
+            writer.newLine();
+
+            // I'm not using stringbuilder because its may lost data when append error.
+            // Fix: using loop to write each line more safety.
+            for (Customer customer : cusList) {
+                writer.write(toCSVString(customer));
+                writer.newLine(); // Write each entry immediately
             }
 
-            return true; // Return true to indicate success
+            return true;
         } catch (IOException e) {
-            e.printStackTrace();
-            return false; // Return false if there was an error
+            System.err.println("Error writing to file: " + e.getMessage());
+            return false;
         }
     }
     
+    private String toCSVString(Customer cus) {
+        return String.format("%s,%s,%s,%s", 
+                cus.getCode(), 
+                cus.getName(), 
+                cus.getEmail(), 
+                cus.getPhone()
+        );
+    }
 }

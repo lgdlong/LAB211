@@ -17,43 +17,31 @@ import java.util.List;
  */
 public class OrderDao implements I_FullAccessDao<Order> {
     
-    private static final String FILE_PATH = "src\\Resource\\feast_order_service.csv";
-    private final File FILE = new File(FILE_PATH);
+    private static final String FILE_PATH = "src" + File.separator + "Resource" + File.separator + "feast_order_service.csv";
+    private static final File FILE = new File(FILE_PATH);
 
     @Override
     public boolean save(List<Order> orderList) {
-        // check file exist first
-        if (!FILE.exists()) {
-            try {
-                FILE.getParentFile().mkdirs();
-                if (FILE.createNewFile()) {
-                    System.out.println("File created at: " + FILE.getAbsolutePath());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-                return false;
-            }
-        }
-        
         if (orderList.isEmpty()) {
-            System.out.println("LIST IS EMPTY!");
+            System.err.println("Warning: Attempting to save an empty customer list.");
             return false;
         }
         
         try {
             // Write the list to the file
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE_PATH))) {
+            try (BufferedWriter writer = new BufferedWriter(new FileWriter(FILE))) {
                 writer.write("Id,CustomerId,SetMenu,Price,Tables,Cost");
+                writer.newLine();
                 
                 for (Order order : orderList) {
+                    writer.write(toCSVString(order));
                     writer.newLine();
-                    writer.write(order.toCSVString());
                 }
             }
 
             return true; // Return true to indicate success
         } catch (IOException e) {
-            e.printStackTrace();
+            System.err.println("Error writing to file: " + e.getMessage());
             return false; // Return false if there was an error
         }
     }
@@ -63,17 +51,11 @@ public class OrderDao implements I_FullAccessDao<Order> {
         List<Order> orderList = new ArrayList<>();
         
         if (!FILE.exists()) {
-            try {
-                FILE.getParentFile().mkdirs();
-                if (FILE.createNewFile()) {
-                    System.out.println("File created at: " + FILE.getAbsolutePath());
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
+            System.err.println("Warning: Feast menu file not found at " + FILE_PATH);
+            return orderList;
         }
         
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE))) {
             String line = reader.readLine();
             
             while ((line = reader.readLine()) != null) {
@@ -103,13 +85,13 @@ public class OrderDao implements I_FullAccessDao<Order> {
         String customerCode = data[1].trim();
         String feastCode = data[2].trim();
         int numberOfTables = Integer.parseInt(data[3].trim());
-        LocalDate date = LocalDate.parse(data[4].trim());
+        LocalDate date = LocalDate.parse(data[4].trim(), Order.getFORMATTER());
         double totalCost = getDoubleSafety(data[5].trim());
         
         return new Order(id, customerCode, feastCode, numberOfTables, date, totalCost);
     }
     
-    private static double getDoubleSafety(String input) { // chatgpt lets go
+    private double getDoubleSafety(String input) { // chatgpt lets go
         try {
             return Double.parseDouble(input); // Attempt to parse the string as a double
         } catch (NumberFormatException e) {
@@ -117,4 +99,14 @@ public class OrderDao implements I_FullAccessDao<Order> {
         }
     }
     
+    private String toCSVString(Order order) {
+        return String.join(",", 
+                order.getId(),
+                order.getCustomerCode(),
+                order.getFeastCode(),
+                String.valueOf(order.getNumberOfTables()),
+                order.getDate().format(Order.getFORMATTER()),
+                String.format("%.2f", order.getTotalCost())
+        );
+    }
 }

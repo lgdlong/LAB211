@@ -3,14 +3,20 @@ package Bussiness;
 import Dao.CustomerDao;
 import Dao.OrderDao;
 import Model.Customer;
-import Model.Feast;
 import Model.Order;
 import Repository.CustomerRepository;
 import Repository.FeastRepository;
 import Repository.OrderRepository;
 import Utils.InputData;
+import static Utils.InputData.inputCusCode;
+import static Utils.InputData.inputEmail;
+import static Utils.InputData.inputName;
+import static Utils.InputData.inputPhone;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  *
@@ -25,8 +31,15 @@ public class Service {
         Customer customer = null;
         
         while (true) {
-            customer = InputData.inputCustomerInfor();
-            if (!cusRepo.isCodeExist(customer.getCode())) {
+            // ENter information
+            String code = inputCusCode("Enter code: ");
+            String name = inputName("Enter name: ");
+            String phone = inputPhone("Enter phone: ");
+            String email = inputEmail("Enter email: ");
+            
+            customer = new Customer(code, name, email, phone);
+            
+            if (!cusRepo.isExist(customer.getCode())) {
                 break;
             } else {
                 System.out.println("Customer code is duplicated!");
@@ -41,30 +54,41 @@ public class Service {
         }
     }
     
-    
-    /**
-     * Yeu cau nhap id
-     * lay ra customer can sua
-     * nhap lai het thong tin
-     * 
-     * 
-     */
     public void updateCustomerInformation() {
-        System.out.println("Enter new customer information:");
+        System.out.println("=== Update Customer Information ===");
         
-        Customer newCustomer = InputData.inputCustomerInfor();
+        String newName, newPhone, newEmail;
+        String code = InputData.inputCusCode("Enter customer code to update: ");
         
-        if (update(newCustomer)) {
-            System.out.println("Update customer " + newCustomer.getCode() + " SUCCESSFUL.");
+        Customer updateCus = cusRepo.getByCode(code);
+        
+        if (updateCus == null) {
+            System.out.println("Customer not found!");
         } else {
-            System.out.println("Update customer " + newCustomer.getCode() + " FAIL.");
+            // ENter information
+            newName = InputData.inputName_Blank("Enter name: ");
+            newPhone = InputData.inputPhone_Blank("Enter phone: ");
+            newEmail = InputData.inputEmail_Blank("Enter email: ");
+            
+            Customer newCustomer = new Customer(
+                    code, 
+                    newName.isBlank() ? updateCus.getName() : newName, 
+                    newEmail.isBlank() ? updateCus.getEmail() : newEmail, 
+                    newPhone.isBlank() ? updateCus.getPhone() : newPhone
+            );
+        
+            if (!update(newCustomer)) {
+                System.out.println("Update customer " + newCustomer.getCode() + " FAIL.");
+            }
         }
     }
     
     public void searchCustomerByName() {
-        String name = InputData.inputName("Enter name to search: ");
+        System.out.print("Enter name to search: ");
+        Scanner sc = new Scanner(System.in);
+        String searchName = sc.nextLine().trim();
         
-        List<Customer> nameList = cusRepo.getListByName(name);
+        List<Customer> nameList = cusRepo.getListByName(searchName);
         
         displayCustomerHeader();
         for (Customer cus : nameList) {
@@ -89,41 +113,50 @@ public class Service {
             }
         }
         
-        if (orderRepo.add(order)) {
-            System.out.println("Add order to repository SUCCESSFUL.");
-        } else {
+        if (!orderRepo.add(order)) {
            System.out.println("Add order to repository FAIL.");
         }
     }
     
     public void updateOrderInformation() {
-        Order order = null;
-
-        // Enter and check if ID exists
-        String id;
-        do {
-            id = InputData.inputString("Enter order id: ");
-            order = orderRepo.getById(id);
-            if (order == null) {
-                System.out.println("Order ID not found. Please try again.");
-            }
-        } while (order == null);
-
-        // Enter new information
-        String feastCode = InputData.inputFeastCode("Enter new feast id: ");
-        int numberOfTables = InputData.inputPositiveInt("Enter new number of tables: ");
-        LocalDate date = InputData.inputDate("Enter new date: ");
-
-        // Update order
-        order.setFeastCode(feastCode);
-        order.setNumberOfTables(numberOfTables);
-        order.setDate(date);
-
-        // Save updated order
-        if (update(order)) {
-            System.out.println("Update order " + order.getId() + " SUCCESSFUL.");
+        String id = InputData.inputString("Enter order id to update: ");
+        String feastCode;
+        int numberOfTables;
+        LocalDate newDate = null;
+        
+        Order order = orderRepo.getById(id);
+        
+        if (order == null) {
+            System.out.println("Order not found.");
         } else {
-            System.out.println("Update order " + order.getId() + " FAIL.");
+            // Enter new information
+            feastCode = InputData.inputFeastCode_Blank("Enter new feast id: ");
+            numberOfTables = InputData.inputPositiveInt("Enter new number of tables: ");
+            
+            String dateStr = InputData.inputString_Blank("Enter new date (yyyy-MM-dd): ");
+            
+            while (!dateStr.isBlank()) {
+                try {
+                    newDate = toLocalDate(dateStr);
+                    break;
+                } catch (DateTimeParseException e) {
+                    System.err.println("Invalid date format. Enter again (yyyy-MM-dd).");
+                    dateStr = InputData.inputString_Blank("Enter new date again (yyyy-MM-dd): ");
+                }
+            }
+            
+            Order newOrder = new Order(
+                    order.getCustomerCode(), 
+                    feastCode.isBlank() ? order.getFeastCode() : feastCode, 
+                    numberOfTables == -1 ? order.getNumberOfTables() : numberOfTables, 
+                    newDate == null ? order.getDate() : newDate, // if newDate not change, keep old data.
+                    feastRepo
+            );
+
+            // Save updated order
+            if (!update(order, newOrder)) {
+                System.out.println("Update order " + order.getId() + " FAIL.");
+            }
         }
     }
     
@@ -131,15 +164,11 @@ public class Service {
         CustomerDao cusDao = new CustomerDao();
         OrderDao orderDao = new OrderDao();
         
-        if (cusDao.save(cusRepo.getCusList())) {
-            System.out.println("Save customers to file SUCCESSFUL.");
-        } else {
+        if (!cusDao.save(cusRepo.getCusList())) {
             System.out.println("Save customers to file FAIL.");
         }
         
-        if (orderDao.save(orderRepo.getOrderList())) {
-            System.out.println("Save orders to file SUCCESSFUL.");
-        } else {
+        if (!orderDao.save(orderRepo.getOrderList())) {
             System.out.println("Save orders to file FAIL.");
         }
         
@@ -147,9 +176,7 @@ public class Service {
     
     public void displayCustomerList() {
         displayCustomerHeader();
-        for (Customer cus : cusRepo.getCusList()) {
-            System.out.println(cus);
-        }
+        cusRepo.display();
     }
     
     public void displayOrderList() {
@@ -160,16 +187,14 @@ public class Service {
     }
     
     public void displayFeast() {
-        for (Feast feast : feastRepo.getFeastList()) {
-            System.out.println(feast);
-        }
+        feastRepo.display();
     }
     
-    public void displayCustomerHeader() {
-        System.out.printf("%-5s | %-20s | %-30s | %-10s\n", "Code", "Name", "Email", "Phone");
+    private void displayCustomerHeader() {
+        System.out.printf("%-5s | %-30s | %-30s | %-10s\n", "Code", "Name", "Email", "Phone");
     }
     
-    public void displayOrderHeader() {
+    private void displayOrderHeader() {
         System.out.printf("%-22s | %-11s | %-10s | %-10s | %-6s | %-12s\n", 
                 "ID", "Customer ID", "Set Menu", "Price", "Tables", "Total Cost");
     }
@@ -196,25 +221,18 @@ public class Service {
         return false;
     }
     
-    private boolean update(Order order) {
-        boolean found = false;
-        
-        if (order == null) {
+    private boolean update(Order oldOrder, Order newOrder) {
+        if (newOrder == null) {
             System.out.println("Order cannot be null!");
             return false;
         }
         
-        for (int i = 0; i < cusRepo.getCusList().size(); i++) {
-            if (orderRepo.getOrderList().get(i).getId().equals(order.getId())) {
-                found = true;
-                orderRepo.getOrderList().set(i, order);
-                return true;
-            }
-        }
-        
-        if (!found) {
-            System.out.println("Order not found!");
-        }
-        return false;
+        // it may throw exception, i dont know :))
+        return orderRepo.add(newOrder) && orderRepo.getOrderList().remove(oldOrder);
+    }
+    
+    private LocalDate toLocalDate(String strDate) throws DateTimeParseException {
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        return LocalDate.parse(strDate, formatter);
     }
 }

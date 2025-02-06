@@ -2,6 +2,7 @@ package Repository;
 
 import Dao.FeastDao;
 import Model.Feast;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -13,12 +14,18 @@ public class FeastRepository implements I_Repository<Feast>{
     
     public FeastRepository() {
         loadData();
-        System.out.println("Load feasts sucessful.");
     }
 
     private void loadData() {
         FeastDao dao = new FeastDao();
-        feastList = dao.getAll();
+        
+        List<Feast> temp = dao.getAll();
+        
+        if (temp == null) {
+            this.feastList = new ArrayList<>();
+        } else {
+            this.feastList = temp;
+        }
     }
 
     public List<Feast> getFeastList() {
@@ -36,7 +43,7 @@ public class FeastRepository implements I_Repository<Feast>{
     @Override
     public void display() {
         if (feastList.isEmpty()) {
-            System.out.println("There is no feast fo display.");
+            System.out.println("There is no feast to display.");
         }
         
         feastList.stream()

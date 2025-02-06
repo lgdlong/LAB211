@@ -21,7 +21,7 @@ public class Menu {
             System.out.println("5. Place a feast order");
             System.out.println("6. Update order information");
             System.out.println("7. Save data to file");
-            System.out.println("8. Display Customer or Order lists");
+            System.out.println("8. Display customer or order lists");
             System.out.println("0. Exit");
             
             choice = InputData.inputChoice("Enter choice: ", 0, 8); // consume the newline character

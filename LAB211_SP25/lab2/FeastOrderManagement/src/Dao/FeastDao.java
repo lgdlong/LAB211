@@ -2,6 +2,7 @@ package Dao;
 
 import Model.Feast;
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,22 +12,28 @@ import java.util.List;
  * @author LGD
  */
 public class FeastDao implements I_ReadDao<Feast>{
-    private static final String FILE_PATH = "src\\Resource\\FeastMenu.csv";
+    private static final String FILE_PATH = "src" + File.separator + "Resource" + File.separator + "FeastMenu.csv";
+    private static final File FILE = new File(FILE_PATH);
     
     @Override
     public List<Feast> getAll() {
         List<Feast> feastList = new ArrayList<>();
         
-        try (BufferedReader reader = new BufferedReader(new FileReader(FILE_PATH))) {
+        if (!FILE.exists()) {
+            System.err.println("Warning: Feast menu file not found at " + FILE_PATH);
+            return feastList;
+        }
+        
+        try (BufferedReader reader = new BufferedReader(new FileReader(FILE))) {
             String line = reader.readLine(); //pass header
             
             while ((line = reader.readLine()) != null) {
                 String[] row = line.split(",");
                 
                 
-                if (row.length != 4) {
-                    System.out.println("READ FEAST IN FILE ERROR AT LENGTH!");
-                    continue;
+                if (!FILE.exists()) {
+                    System.err.println("Warning: Feast menu file not found at " + FILE_PATH);
+                    return feastList;
                 }
                 
                 Feast f = getFeastByRow(row);
@@ -51,10 +58,11 @@ public class FeastDao implements I_ReadDao<Feast>{
         return new Feast(code, name, price, ingredient);
     }
     
-    private static double getDoubleSafety(String input) { // chatgpt lets go
+    private double getDoubleSafety(String input) { // chatgpt lets go
         try {
             return Double.parseDouble(input); // Attempt to parse the string as a double
         } catch (NumberFormatException e) {
+            System.err.println("Invalid price format: " + input);
             return 0.0; // Return 0.0 if parsing fails
         }
     }

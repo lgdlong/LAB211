@@ -11,25 +11,42 @@ import java.util.Scanner;
  * @author LGD
  */
 public class InputData {
+
     public static String inputString(String prompt) {
         Scanner sc = new Scanner(System.in);
         String id;
         do {
             System.out.print(prompt);
             id = sc.nextLine().trim();
-        } while (!id.isEmpty() && !id.isBlank());
+        } while (id.isBlank());
         return id;
+    }
+
+    public static String inputString_Blank(String prompt) {
+        Scanner sc = new Scanner(System.in);
+        
+        System.out.print(prompt);
+        
+        return sc.nextLine().trim();
     }
     
     public static int inputPositiveInt(String prompt) {
         Scanner sc = new Scanner(System.in);
-        int num = -1; 
+        int num = -1;
         do {
             try {
                 System.out.print(prompt);
-                num = Integer.parseInt(sc.nextLine());
-                if (!ValidateData.isPositiveInt(num)) {
-                    System.out.println("The number must be positive. Please try again.");
+
+                String data = sc.nextLine();
+
+                if (data.isBlank()) {
+                    return -1;
+                } else {
+                    num = Integer.parseInt(data.trim());
+
+                    if (!ValidateData.isPositiveInt(num)) {
+                        System.out.println("The number must be positive. Please try again.");
+                    }
                 }
             } catch (NumberFormatException e) {
                 System.out.println("Invalid input. Please enter a positive integer.");
@@ -37,7 +54,7 @@ public class InputData {
         } while (!ValidateData.isPositiveInt(num));
         return num;
     }
-    
+
     public static int inputChoice(String prompt, int min, int max) {
         Scanner sc = new Scanner(System.in);
 
@@ -55,59 +72,111 @@ public class InputData {
 
         return choice;
     }
-    
+
     public static String inputName(String prompt) {
         Scanner sc = new Scanner(System.in);
         String name;
         do {
             System.out.print(prompt);
             name = sc.nextLine().trim();
-        } while (!ValidateData.isValidName(name));
+        } while (!ValidateData.isValidName(name, false));
         return name;
     }
-    
+
     public static String inputCusCode(String prompt) {
         Scanner sc = new Scanner(System.in);
         String code;
         do {
             System.out.print(prompt);
             code = sc.nextLine().trim();
-        } while (!ValidateData.isValidCusCode(code));
+        } while (!ValidateData.isValidCusCode(code, false));
         return code;
     }
-    
+
     public static String inputFeastCode(String prompt) {
         Scanner sc = new Scanner(System.in);
         String code;
         do {
             System.out.print(prompt);
             code = sc.nextLine().trim();
-        } while (!ValidateData.isValidFeastCode(code));
+        } while (!ValidateData.isValidFeastCode(code, false));
         return code;
     }
-    
+
     public static String inputPhone(String prompt) {
         Scanner sc = new Scanner(System.in);
         String phoneNumber;
         do {
             System.out.print(prompt);
             phoneNumber = sc.nextLine().trim();
-        } while (!ValidateData.isValidPhoneNumber(phoneNumber));
+        } while (!ValidateData.isValidPhoneNumber(phoneNumber, false));
 
         return phoneNumber;
     }
-    
+
     public static String inputEmail(String prompt) {
         Scanner sc = new Scanner(System.in);
         String email;
         do {
             System.out.print(prompt);
             email = sc.nextLine().trim();
-        } while (!ValidateData.isValidEmail(email));
+        } while (!ValidateData.isValidEmail(email, false));
 
         return email;
     }
-    
+
+    public static String inputName_Blank(String prompt) {
+        Scanner sc = new Scanner(System.in);
+        String name;
+        do {
+            System.out.print(prompt);
+            name = sc.nextLine().trim();
+        } while (!ValidateData.isValidName(name, true));
+        return name;
+    }
+
+    public static String inputCusCode_Blank(String prompt) {
+        Scanner sc = new Scanner(System.in);
+        String code;
+        do {
+            System.out.print(prompt);
+            code = sc.nextLine().trim();
+        } while (!ValidateData.isValidCusCode(code, true));
+        return code;
+    }
+
+    public static String inputFeastCode_Blank(String prompt) {
+        Scanner sc = new Scanner(System.in);
+        String code;
+        do {
+            System.out.print(prompt);
+            code = sc.nextLine().trim();
+        } while (!ValidateData.isValidFeastCode(code, true));
+        return code;
+    }
+
+    public static String inputPhone_Blank(String prompt) {
+        Scanner sc = new Scanner(System.in);
+        String phoneNumber;
+        do {
+            System.out.print(prompt);
+            phoneNumber = sc.nextLine().trim();
+        } while (!ValidateData.isValidPhoneNumber(phoneNumber, true));
+
+        return phoneNumber;
+    }
+
+    public static String inputEmail_Blank(String prompt) {
+        Scanner sc = new Scanner(System.in);
+        String email;
+        do {
+            System.out.print(prompt);
+            email = sc.nextLine().trim();
+        } while (!ValidateData.isValidEmail(email, true));
+
+        return email;
+    }
+
     public static LocalDate inputDate(String prompt) {
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         Scanner sc = new Scanner(System.in);
@@ -126,16 +195,4 @@ public class InputData {
 
         return date;
     }
-    
-    public static Customer inputCustomerInfor() {
-        // ENter information
-        String code = inputCusCode("Enter code: ");
-        String name = inputName("Enter name: ");
-        String phone = inputPhone("Enter phone: ");
-        String email = inputEmail("Enter email: ");
-        
-        // Create a customer object
-        return new Customer(code, name, email, phone);
-    }
-    
 }

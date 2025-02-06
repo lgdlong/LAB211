@@ -1,7 +1,9 @@
 package Repository;
 
 import Dao.OrderDao;
+import Model.Customer;
 import Model.Order;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -14,7 +16,6 @@ public class OrderRepository implements I_Repository<Order>{
     
     public OrderRepository() {
         loadData();
-        System.out.println("Load orders successful.");
     }
 
     public List<Order> getOrderList() {
@@ -23,7 +24,14 @@ public class OrderRepository implements I_Repository<Order>{
     
     private void loadData() {
         OrderDao dao = new OrderDao();
-        this.orderList = dao.getAll();
+        
+        List<Order> temp = dao.getAll();
+        
+        if (temp == null) {
+            this.orderList = new ArrayList<>();
+        } else {
+            this.orderList = temp;
+        }
     }
     
     @Override
@@ -36,7 +44,11 @@ public class OrderRepository implements I_Repository<Order>{
 
     @Override
     public void display() {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        if (orderList.isEmpty()) {
+            System.out.println("There is no order to display.");
+        }
+        orderList.stream()
+               .forEach(order -> System.out.println(order));
     }
     
     public Order getById(String id) {
