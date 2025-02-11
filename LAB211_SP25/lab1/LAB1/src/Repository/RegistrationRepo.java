@@ -8,11 +8,10 @@ import java.util.List;
 
 public class RegistrationRepo {
     private List<Registration> registrationList = null;
-    private RegistrationDao registrationDao = new RegistrationDao();
+    private final RegistrationDao registrationDao = new RegistrationDao();
+
     public RegistrationRepo() {
         loadData();
-        
-        System.out.println(Color.ANSI_YELLOW + "Load registration's repository successful." + Color.ANSI_RESET);
     }
     
     public void loadData() {
@@ -34,8 +33,7 @@ public class RegistrationRepo {
     public boolean delete (String regisId) {
         return deleteById(regisId) != null;
     }
-    
-    // fix hereakhjlgwdlkagwuod;ă
+
     public Registration deleteById (String regisId) {
         Registration reg = getRegistrationById(regisId);
         
@@ -50,7 +48,7 @@ public class RegistrationRepo {
     
     public Registration getRegistrationById(String id) {
         return registrationList.stream()
-                        .filter(reg -> reg.getId() == id)
+                        .filter(reg -> reg.getId().equals(id))
                         .findFirst()
                         .orElse(null);
     }

@@ -8,11 +8,10 @@ import java.util.List;
 
 public class MountainRepo {
     private List<Mountain> mountainList = null;
-    private MountainDao mountainDao = new MountainDao();
+    private final MountainDao mountainDao = new MountainDao();
 
     public MountainRepo() {
-        loadData();        
-        System.out.println(Color.ANSI_YELLOW + "Load mountain's repository successful." + Color.ANSI_RESET);
+        loadData();
     }
 
     public List<Mountain> getMountainList() {

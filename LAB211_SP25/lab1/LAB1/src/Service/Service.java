@@ -1,7 +1,6 @@
 package Service;
 
 import Dao.I_RegistrationDao;
-import Dao.MountainDao;
 import Dao.RegistrationDao;
 import Model.Registration;
 import Utils.InputData;
@@ -12,87 +11,84 @@ import Repository.RegistrationRepo;
 import Utils.ValidationData;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 
 public class Service {
     
     // REPOSITORIES
-    private static RegistrationRepo regRepo = new RegistrationRepo();
-    private static MountainRepo mountainRepo = new MountainRepo();
+    private static final RegistrationRepo regRepo = new RegistrationRepo();
+    private static final MountainRepo mountainRepo = new MountainRepo();
     
     //-----------------------------------------------
     public static void createRegistration() {
         String id = InputData.inputId();
         while (ValidationData.isIdExist(id, regRepo)) {
-            System.out.println("Id exists.");
+            System.out.println("Id exists. Please enter a different ID.");
             id = InputData.inputId();
         }
-        
+    
         String name = InputData.inputName();
-        
         String phoneNumber = InputData.inputPhoneNumber();
-        
         String email = InputData.inputEmail();
-        
         String mountainCode = InputData.inputMountainCode();
+    
         while (!ValidationData.isMoutainCodeExist(mountainCode, mountainRepo)) {
-            System.out.println("Mountain code does not exist.");
+            System.out.println("Mountain code does not exist. Please enter a valid mountain code.");
             mountainCode = InputData.inputMountainCode();
-
         }
 
         Registration registration = new Registration(id, name, phoneNumber, email, mountainCode);
 
         if (regRepo.add(registration)) {
-            System.out.println("Register successful into repository with student ID: " + registration.getId());
+            System.out.println("Registration successful with student ID: " + registration.getId());
         } else {
-            System.out.println("Register fail into repository with student ID: " + registration.getId());
+            System.out.println("Registration failed for student ID: " + registration.getId());
         }
     }
 
     //-----------------------------------------------
     public static void displayAllRegistrations() {
-        if (regRepo.getRegistrationList().isEmpty()) {
+        List<Registration> registrations = regRepo.getRegistrationList();
+        if (registrations.isEmpty()) {
             System.out.println("No registration found.");
             return;
         }
 
         printRegistrationHeader();
-        displayList(regRepo.getRegistrationList());
+        displayList(registrations);
     }
-    
+
     //-----------------------------------------------
     public static void deleteRegistration() {
         String id = InputData.inputId();
-        
+
         if (!ValidationData.isIdExist(id, regRepo)) {
             System.out.println("ID not found.");
             return;
         }
-        
+
         System.out.print("ARE YOU SURE TO DELETE " + id + " (y/n),(yes/no):");
         boolean ready = InputData.inputYesNo();
-        
+
         if (!ready) {
             return;
         }
-        
+
         if (regRepo.delete(id)) {
             System.out.println("Delete registration in repository successful.");
         } else {
             System.out.println("Delete registration in repository fail.");
         }
     }
-    
+
     //-----------------------------------------------
     public static void searchByName() {
         String name = InputData.inputName();
 
         List<Registration> nameReg = new ArrayList<>(); // list to store registration match with name
 
-        // add registrations match name to nameReg 
+        // add registrations match name to nameReg
         for (Registration r : regRepo.getRegistrationList()) {
             if (name.equalsIgnoreCase(r.getName())) {
                 nameReg.add(r);
@@ -107,20 +103,20 @@ public class Service {
         printRegistrationHeader(); // print header
         displayList(nameReg);
     }
-    
+
     //-----------------------------------------------
     public static void filterByCampus() {
         String campus = InputData.inputCampus();
 
         List<Registration> regCampusList = new ArrayList<>();
-        
+
         // filter
         for (Registration reg : regRepo.getRegistrationList()) {
             if (reg.getCampusForId(reg.getId()).equalsIgnoreCase(campus)) {
                 regCampusList.add(reg);
             }
         }
-        
+
         // print
         if (regCampusList.isEmpty()) {
             System.out.println("No campus registration.");
@@ -145,13 +141,13 @@ public class Service {
 
             if (!ValidationData.isCodeExistInRegStatList(mountainCodeString, regStatList)) {
 
-                // get moutain infor by code first;
+                // get mountain info by code first;
                 Mountain m = mountainRepo.getMoutainByCode(mountainCodeInt);
                 // create a regStat and add in to list;
                 RegStat r = new RegStat(mountainCodeString, m.getMountainName(), 1, registration.getFee());
                 regStatList.add(r);
 
-            } else { // moutain code exist in statList
+            } else { // mountain code exist in statList
 
                 // get index of regStat in regStatList by mountainCode
                 int index = regStatList.indexOf(getRegStatByCode(mountainCodeString, regStatList));
@@ -164,11 +160,7 @@ public class Service {
 
         printStatHeader();
         // sort to print increment with mountain code
-        Collections.sort(regStatList,
-                (h1, h2) -> {
-                    return h1.getMountainCode().compareTo(h2.getMountainCode());
-                }
-        );
+        regStatList.sort(Comparator.comparing(RegStat::getMountainCode));
         displayList(regStatList);
     }
 
@@ -180,23 +172,22 @@ public class Service {
     }
 
     //-----------------------------------------------
-    public static void printAllMoutains() {
+    public static void printAllMountains() {
         if (mountainRepo.getMountainList() == null || mountainRepo.getMountainList().isEmpty()) {
             System.out.println("No mountain found.");
             return;
         }
 
-        
+
         printMountainHeader();
-        Collections.sort(mountainRepo.getMountainList(), 
-                Comparator.comparingInt(Mountain::getId));
+        mountainRepo.getMountainList().sort(Comparator.comparingInt(Mountain::getId));
         displayList(mountainRepo.getMountainList());
     }
 
     //-----------------------------------------------
     public static void save() {
         I_RegistrationDao rDao = new RegistrationDao();
-        
+
         // Save and alert.
         if (rDao.save(regRepo)) {
             System.out.println("Update registration file successful.");
@@ -212,7 +203,7 @@ public class Service {
 
     //-----------------------------------------------
     public static void printMountainHeader() {
-        System.out.printf("%-4s | %-20s | %-10s | %-50s\n", "Code", "Moutain", "Province", "Description");
+        System.out.printf("%-4s | %-20s | %-10s | %-50s\n", "Code", "Mountain", "Province", "Description");
     }
 
     //-----------------------------------------------
@@ -232,9 +223,9 @@ public class Service {
     }
 
     //-----------------------------------------------
-    public static int getIntByStringMountainCode(String moutainCode) {
+    public static int getIntByStringMountainCode(String mountainCode) {
         // moutain code format: "^MT//d+"
-        return Integer.parseInt(moutainCode.replace("MT", ""));
+        return Integer.parseInt(mountainCode.replace("MT", ""));
     }
     
 }

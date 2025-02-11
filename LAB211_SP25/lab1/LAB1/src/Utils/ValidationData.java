@@ -33,7 +33,7 @@ public class ValidationData {
     }
     
     public static boolean isValidName(String name) {
-        if (name.isBlank() || name.isEmpty()) {
+        if (name.isBlank()) {
             return false;
         }
 
@@ -46,7 +46,7 @@ public class ValidationData {
     }
 
     public static boolean isValidId(String id) {
-        if (id.isBlank() || id.isEmpty()) {
+        if (id.isBlank()) {
             return false;
         }
 
@@ -63,7 +63,7 @@ public class ValidationData {
             System.out.println("Invalid phone number. Only digits are allowed.");
         }
 
-        if (phoneNumber.isBlank() || phoneNumber.isEmpty()) {
+        if (phoneNumber.isBlank()) {
             return false;
         }
 
@@ -86,7 +86,7 @@ public class ValidationData {
             return false;
         }
         
-        if (mountainCode.isBlank() || mountainCode.isEmpty()) {
+        if (mountainCode.isBlank()) {
             return false;
         }
         
@@ -99,7 +99,7 @@ public class ValidationData {
     }
     
     public static boolean isValidEmail(String email) {
-        if (email.isBlank() || email.isEmpty()) {
+        if (email.isBlank()) {
             return false;
         }
         if (email.matches(EMAIL_REGEX)) {

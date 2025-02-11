@@ -75,7 +75,7 @@ public class Registration {
         String first2Digit = phoneNumber.substring(0, 2);
 
         if (first2Digit.equals("03") || first2Digit.equals("08")) {
-            this.fee = 6000000 * 65 / 100;
+            this.fee = (double) (6000000 * 65) / 100;
         } else {
             this.fee = 6000000;
         }

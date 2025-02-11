@@ -39,6 +39,7 @@ public class MountainDao implements I_MountainDao{
         return mountains;
     }
 
+
     private Mountain getMountainByLine(String[] data) {
         if (data.length == 0) {
             return null;
