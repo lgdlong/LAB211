@@ -13,6 +13,7 @@ import Utils.ValidationData;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Scanner;
 
 public class Service {
     
@@ -84,13 +85,15 @@ public class Service {
 
     //-----------------------------------------------
     public static void searchByName() {
-        String name = InputData.inputName();
+        Scanner sc = new Scanner(System.in);
+        System.out.print("Enter name to search: ");
+        String name = sc.nextLine();
 
         List<Registration> nameReg = new ArrayList<>(); // list to store registration match with name
 
         // add registrations match name to nameReg
         for (Registration r : regRepo.getRegistrationList()) {
-            if (name.equalsIgnoreCase(r.getName())) {
+            if (r.getName().toLowerCase().contains(name.toLowerCase())) {
                 nameReg.add(r);
             }
         }
