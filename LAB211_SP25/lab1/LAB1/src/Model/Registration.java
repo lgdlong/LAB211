@@ -1,12 +1,16 @@
 package Model;
 
+import Utils.ValidationData;
+
+import java.util.Arrays;
+
 public class Registration {
 
     private String id;
     private String name;
     private String phoneNumber;
     private String email;
-    private String moutainCode;
+    private String mountainCode;
     private double fee;
 
     public Registration(String id, String name, String phoneNumber, String email, String moutainCode) {
@@ -14,7 +18,7 @@ public class Registration {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.moutainCode = moutainCode;
+        this.mountainCode = moutainCode;
         setFee();
     }
 
@@ -23,7 +27,7 @@ public class Registration {
         this.name = name;
         this.phoneNumber = phoneNumber;
         this.email = email;
-        this.moutainCode = moutainCode;
+        this.mountainCode = moutainCode;
         this.fee = fee;
     }
 
@@ -59,12 +63,12 @@ public class Registration {
         this.email = email;
     }
 
-    public String getMoutainCode() {
-        return moutainCode;
+    public String getMountainCode() {
+        return mountainCode;
     }
 
-    public void setMoutainCode(String moutainCode) {
-        this.moutainCode = moutainCode;
+    public void setMountainCode(String mountainCode) {
+        this.mountainCode = mountainCode;
     }
 
     public double getFee() {
@@ -72,9 +76,7 @@ public class Registration {
     }
 
     public void setFee() {
-        String first2Digit = phoneNumber.substring(0, 2);
-
-        if (first2Digit.equals("03") || first2Digit.equals("08")) {
+        if (ValidationData.isPhoneDiscount(this.phoneNumber)) {
             this.fee = (double) (6000000 * 65) / 100;
         } else {
             this.fee = 6000000;
@@ -82,7 +84,7 @@ public class Registration {
     }
 
     public String toCSVString() {
-        return String.format("%s, %s, %s, %s, %s, %f", id, name, phoneNumber, email, moutainCode, fee);
+        return String.format("%s, %s, %s, %s, %s, %f", id, name, phoneNumber, email, mountainCode, fee);
     }
     
     public String getCampusForId(String id) {
@@ -91,7 +93,7 @@ public class Registration {
 
     @Override
     public String toString() {
-        return String.format("%-8s | %-20s | %-12s | %-20s | %-13s | %-7.2f", id, name, phoneNumber, email, moutainCode, fee);
+        return String.format("%-8s | %-20s | %-12s | %-20s | %-13s | %-7.2f", id, name, phoneNumber, email, mountainCode, fee);
     }
 
 }

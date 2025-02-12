@@ -4,17 +4,7 @@ import java.util.Scanner;
 
 public class InputData {
 
-    // Will check again this method.
-    public static int inputPositiveInt() {
-        Scanner sc = new Scanner(System.in);
-        int num;
-        do {
-            num = Integer.parseInt(sc.nextLine());
-        } while (!ValidationData.isPositiveInt(num));
-
-        return num;
-    }
-    
+    //--------------------------------------------
     public static boolean inputYesNo() {
         Scanner sc = new Scanner(System.in);
         String choice;
@@ -24,7 +14,8 @@ public class InputData {
 
         return choice.equalsIgnoreCase("y") || choice.equalsIgnoreCase("yes");
     }
-    
+
+    //--------------------------------------------
     public static String inputCampus() {
         Scanner scanner = new Scanner(System.in);
         String campus;
@@ -44,6 +35,8 @@ public class InputData {
         }
         return campus;
     }
+
+    //--------------------------------------------
     public static int inputChoice(int min, int max) {
         Scanner sc = new Scanner(System.in);
         int choice = -1;
@@ -64,6 +57,7 @@ public class InputData {
         return choice;
     }
 
+    //--------------------------------------------
     public static String inputId() {
         Scanner sc = new Scanner(System.in);
 
@@ -77,47 +71,101 @@ public class InputData {
         return id;
     }
 
+    //--------------------------------------------
     public static String inputName() {
         Scanner sc = new Scanner(System.in);
         String name;
         do {
             System.out.print("Enter name: ");
             name = sc.nextLine().trim();
-        } while (!ValidationData.isValidName(name));
+        } while (!ValidationData.isValidName(name, false));
 
         return name;
     }
 
+    //--------------------------------------------
     public static String inputEmail() {
         Scanner sc = new Scanner(System.in);
         String email;
         do {
             System.out.print("Enter email: ");
             email = sc.nextLine().trim();
-        } while (!ValidationData.isValidEmail(email));
+        } while (!ValidationData.isValidEmail(email, false));
 
         return email;
     }
 
+    //--------------------------------------------
     public static String inputPhoneNumber() {
         Scanner sc = new Scanner(System.in);
         String phoneNumber;
         do {
             System.out.print("Enter phone number: ");
             phoneNumber = sc.nextLine().trim();
-        } while (!ValidationData.isValidPhoneNumber(phoneNumber));
+        } while (!ValidationData.isValidPhoneNumber(phoneNumber, false));
 
         return phoneNumber;
     }
 
+    //--------------------------------------------
     public static String inputMountainCode() {
         Scanner sc = new Scanner(System.in);
         String mountainCode;
         do {
             System.out.print("Enter mountain code: ");
             mountainCode = sc.nextLine().trim();
-        } while (!ValidationData.isValidMountainCode(mountainCode));
+        } while (!ValidationData.isValidMountainCode(mountainCode, false));
 
         return mountainCode;
     }
+
+    //--------------------------------------------
+    public static String inputName_Blank() {
+        Scanner sc = new Scanner(System.in);
+        String name;
+        do {
+            System.out.print("Enter name: ");
+            name = sc.nextLine().trim();
+        } while (!ValidationData.isValidName(name, true));
+
+        return name;
+    }
+
+    //--------------------------------------------
+    public static String inputEmail_Blank() {
+        Scanner sc = new Scanner(System.in);
+        String email;
+        do {
+            System.out.print("Enter email: ");
+            email = sc.nextLine().trim();
+        } while (!ValidationData.isValidEmail(email, true));
+
+        return email;
+    }
+
+    //--------------------------------------------
+    public static String inputPhoneNumber_Blank() {
+        Scanner sc = new Scanner(System.in);
+        String phoneNumber;
+        do {
+            System.out.print("Enter phone number: ");
+            phoneNumber = sc.nextLine().trim();
+        } while (!ValidationData.isValidPhoneNumber(phoneNumber, true));
+
+        return phoneNumber;
+    }
+
+    //--------------------------------------------
+    public static String inputMountainCode_Blank() {
+        Scanner sc = new Scanner(System.in);
+        String mountainCode;
+        do {
+            System.out.print("Enter mountain code: ");
+            mountainCode = sc.nextLine().trim();
+        } while (!ValidationData.isValidMountainCode(mountainCode, true));
+
+        return mountainCode;
+    }
+
+
 }

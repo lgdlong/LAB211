@@ -25,7 +25,7 @@ public class Menu {
                     Service.createRegistration();
                     break;
                 case 2:
-                    
+                    Service.updateRegistration();
                     break;
                 case 3:
                     Service.displayAllRegistrations();

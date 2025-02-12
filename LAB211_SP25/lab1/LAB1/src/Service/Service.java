@@ -34,7 +34,7 @@ public class Service {
         String email = InputData.inputEmail();
         String mountainCode = InputData.inputMountainCode();
     
-        while (!ValidationData.isMoutainCodeExist(mountainCode, mountainRepo)) {
+        while (!ValidationData.isMountainCodeExist(mountainCode, mountainRepo)) {
             System.out.println("Mountain code does not exist. Please enter a valid mountain code.");
             mountainCode = InputData.inputMountainCode();
         }
@@ -59,6 +59,56 @@ public class Service {
         printRegistrationHeader();
         displayList(registrations);
     }
+
+    //-----------------------------------------------
+    public static void updateRegistration() {
+        String id = InputData.inputId();
+
+        if (!ValidationData.isIdExist(id, regRepo)) {
+            System.out.println("ID not found.");
+            return;
+        }
+
+        Registration reg = regRepo.getRegistrationById(id);
+
+        System.out.println("Current information:");
+        System.out.println(reg.toString());
+
+        System.out.println("Enter new information (leave blank to keep old value):");
+
+        String name = InputData.inputName_Blank();
+        if (name.isBlank()) {
+            name = reg.getName();
+        }
+
+        String phoneNumber = InputData.inputPhoneNumber_Blank();
+        if (phoneNumber.isBlank()) {
+            phoneNumber = reg.getPhoneNumber();
+        }
+
+        String email = InputData.inputEmail_Blank();
+        if (email.isBlank()) {
+            email = reg.getEmail();
+        }
+
+        String mountainCode = InputData.inputMountainCode_Blank();
+        while (!mountainCode.isBlank() && !ValidationData.isMountainCodeExist(mountainCode, mountainRepo)) {
+            System.out.println("Mountain code does not exist. Please enter a valid mountain code.");
+            mountainCode = InputData.inputMountainCode();
+        }
+
+        if (mountainCode.isBlank()) {
+            mountainCode = reg.getMountainCode();
+        }
+
+        reg.setName(name);
+        reg.setPhoneNumber(phoneNumber);
+        reg.setEmail(email);
+        reg.setMountainCode(mountainCode);
+
+        System.out.println("Update registration successful.");
+    }
+
 
     //-----------------------------------------------
     public static void deleteRegistration() {
@@ -139,7 +189,7 @@ public class Service {
         List<RegStat> regStatList = new ArrayList<>();
 
         for (Registration registration : regRepo.getRegistrationList()) {
-            String mountainCodeString = registration.getMoutainCode();
+            String mountainCodeString = registration.getMountainCode();
             int mountainCodeInt = getIntByStringMountainCode(mountainCodeString);
 
             if (!ValidationData.isCodeExistInRegStatList(mountainCodeString, regStatList)) {
@@ -172,19 +222,6 @@ public class Service {
         for (T _t : t) {
             System.out.println(_t.toString());
         }
-    }
-
-    //-----------------------------------------------
-    public static void printAllMountains() {
-        if (mountainRepo.getMountainList() == null || mountainRepo.getMountainList().isEmpty()) {
-            System.out.println("No mountain found.");
-            return;
-        }
-
-
-        printMountainHeader();
-        mountainRepo.getMountainList().sort(Comparator.comparingInt(Mountain::getId));
-        displayList(mountainRepo.getMountainList());
     }
 
     //-----------------------------------------------
