@@ -1,7 +1,6 @@
 package Repository;
 
 import Dao.OrderDao;
-import Model.Customer;
 import Model.Order;
 import java.util.ArrayList;
 import java.util.List;
