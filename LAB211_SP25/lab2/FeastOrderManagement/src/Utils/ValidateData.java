@@ -6,9 +6,8 @@ package Utils;
  */
 public class ValidateData {
     
-    private static final String CUS_CODE_REGEX = "^(C|G|K)\\d{4}$";
+    private static final String CUS_CODE_REGEX = "^([CGK])\\d{4}$";
     private static final String FEAST_CODE_REGEX = "^PW\\d+";
-    private static final String NAME_REGEX = "";
     private static final String PHONE_REGEX = "^(03|05|07|08|09)\\d{8}$";
     private static final String EMAIL_REGEX = "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\\.[a-zA-Z]{2,}$";
     
@@ -22,12 +21,11 @@ public class ValidateData {
     
     public static boolean isValidName(String name, boolean blank) {
         // can be blank if true
-        if (blank == true && name.isBlank()) {
+        if (blank && name.isBlank()) {
             return true;
         }
         
-        if (name.length() < 2 || name.length() > 25 || 
-                name.isBlank() || name.isEmpty()) {
+        if (name.length() < 2 || name.length() > 25 || name.isBlank()) {
             System.out.println("Invalid name!");
             return false;
         } else {
@@ -37,7 +35,7 @@ public class ValidateData {
     
     public static boolean isValidCusCode(String code, boolean blank) {
         // can be blank if true
-        if (blank == true && code.isBlank()) {
+        if (blank && code.isBlank()) {
             return true;
         }
         
@@ -56,7 +54,7 @@ public class ValidateData {
     
     public static boolean isValidFeastCode(String code, boolean blank) {
         // can be blank if true
-        if (blank == true && code.isBlank()) {
+        if (blank && code.isBlank()) {
             return true;
         }
         
@@ -73,7 +71,7 @@ public class ValidateData {
     
     public static boolean isValidPhoneNumber(String phoneNumber, boolean blank) {
         // can be blank if true
-        if (blank == true && phoneNumber.isBlank()) {
+        if (blank && phoneNumber.isBlank()) {
             return true;
         }
         
@@ -95,7 +93,7 @@ public class ValidateData {
     }
     
     public static boolean isValidEmail(String email, boolean blank) {
-        if (blank == true && email.isBlank()) {
+        if (blank && email.isBlank()) {
             return true;
         }
         

@@ -4,6 +4,7 @@ import Model.Feast;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,37 +19,30 @@ public class FeastDao implements I_ReadDao<Feast>{
     @Override
     public List<Feast> getAll() {
         List<Feast> feastList = new ArrayList<>();
-        
+
         if (!FILE.exists()) {
             System.err.println("Warning: Feast menu file not found at " + FILE_PATH);
             return feastList;
         }
-        
+
         try (BufferedReader reader = new BufferedReader(new FileReader(FILE))) {
-            String line = reader.readLine(); //pass header
-            
+            reader.readLine(); // Skip header
+
+            String line;
             while ((line = reader.readLine()) != null) {
-                String[] row = line.split(",");
-                
-                
-                if (!FILE.exists()) {
-                    System.err.println("Warning: Feast menu file not found at " + FILE_PATH);
-                    return feastList;
-                }
-                
-                Feast f = getFeastByRow(row);
+                Feast f = getFeastByRow(line.split(","));
                 if (f != null) {
                     feastList.add(f);
                 }
-                
             }
-        } catch(Exception e) {
-            e.printStackTrace();
+        } catch (IOException e) {
+            System.err.println("Error reading feast menu file: " + e.getMessage());
         }
-        
+
         return feastList;
     }
-    
+
+
     private Feast getFeastByRow(String[] data) {
         String code = data[0].trim();
         String name = data[1].trim();

@@ -4,6 +4,7 @@ import Dao.FeastDao;
 import Model.Feast;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -17,15 +18,8 @@ public class FeastRepository implements I_Repository<Feast>{
     }
 
     private void loadData() {
-        FeastDao dao = new FeastDao();
-        
-        List<Feast> temp = dao.getAll();
-        
-        if (temp == null) {
-            this.feastList = new ArrayList<>();
-        } else {
-            this.feastList = temp;
-        }
+        this.feastList = Optional.ofNullable(new FeastDao().getAll())
+                               .orElseGet(ArrayList::new);
     }
 
     public List<Feast> getFeastList() {
@@ -45,9 +39,7 @@ public class FeastRepository implements I_Repository<Feast>{
         if (feastList.isEmpty()) {
             System.out.println("There is no feast to display.");
         }
-        
-        feastList.stream()
-                 .forEach(feast -> System.out.println(feast));
+        feastList.forEach(System.out::println);
     }
     
     public Feast getFeastByCode(String code) {

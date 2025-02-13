@@ -5,6 +5,7 @@ import Model.Customer;
 import Model.Order;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -23,15 +24,8 @@ public class OrderRepository implements I_Repository<Order>{
     }
     
     private void loadData() {
-        OrderDao dao = new OrderDao();
-        
-        List<Order> temp = dao.getAll();
-        
-        if (temp == null) {
-            this.orderList = new ArrayList<>();
-        } else {
-            this.orderList = temp;
-        }
+        this.orderList = Optional.ofNullable(new OrderDao().getAll())
+                                .orElseGet(ArrayList::new);
     }
     
     @Override
@@ -47,8 +41,7 @@ public class OrderRepository implements I_Repository<Order>{
         if (orderList.isEmpty()) {
             System.out.println("There is no order to display.");
         }
-        orderList.stream()
-               .forEach(order -> System.out.println(order));
+        orderList.forEach(System.out::println);
     }
     
     public Order getById(String id) {

@@ -4,6 +4,7 @@ import Dao.CustomerDao;
 import Model.Customer;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  *
@@ -15,19 +16,16 @@ public class CustomerRepository implements I_Repository<Customer>{
     public CustomerRepository() {
         loadData();
     }
-    
+
+    /**
+     * Loads customer data from the database using {@link CustomerDao}.
+     * If the retrieved list is {@code null}, initializes an empty {@code ArrayList}.
+     */
     private void loadData() {
-        CustomerDao dao = new CustomerDao();
-        
-        List<Customer> temp = dao.getAll();
-        
-        if (temp == null) {
-            this.cusList = new ArrayList<>();
-        } else {
-            this.cusList = temp;
-        }
+        this.cusList = Optional.ofNullable(new CustomerDao().getAll())
+                            .orElseGet(ArrayList::new);
     }
-    
+
     public List<Customer> getCusList() {
         return cusList;
     }
@@ -45,8 +43,7 @@ public class CustomerRepository implements I_Repository<Customer>{
         if (cusList.isEmpty()) {
             System.out.println("There is no customer to display.");
         }
-        cusList.stream()
-               .forEach(cus -> System.out.println(cus));
+        cusList.forEach(System.out::println);
     }
 
     public Customer getByCode(String code) {
