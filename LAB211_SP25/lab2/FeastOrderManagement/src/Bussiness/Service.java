@@ -28,7 +28,7 @@ public class Service {
     OrderRepository orderRepo = new OrderRepository();
     
     public void registerCustomer() {
-        Customer customer = null;
+        Customer customer;
         
         while (true) {
             // ENter information
@@ -97,7 +97,7 @@ public class Service {
     }
     
     public void createOrder() {
-        Order order = null;
+        Order order;
         
         while (true) {
             String cusCode = InputData.inputCusCode("Enter customer code: ");
