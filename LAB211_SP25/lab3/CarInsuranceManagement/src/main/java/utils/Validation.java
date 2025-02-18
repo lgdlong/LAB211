@@ -14,9 +14,8 @@ public class Validation {
                     "099|059|" +  // Gmobile
                     "024|028)\\d{7}$";
 
-
-
     private static final String LICENSE_PLATE_REGEX = "5[0-9]{1}[A-Z]{1}[1-9]{1}[0-9]{5}";
+
     private static final Pattern PHONE_PATTERN = Pattern.compile(VIETNAM_MOBILE_REGEX);
 
     public static boolean isValidLicensePlate(String licensePlate) {
@@ -35,39 +34,23 @@ public class Validation {
     }
 
     public static boolean isValidOwnerName(String ownerName) {
-        if (ownerName == null) {
-            return false;
-        }
-
-        if (ownerName.isBlank()) {
-            return false;
-        }
+        if (ownerName == null) return false;
+        if (ownerName.isBlank()) return false;
 
         return 2 <= ownerName.length() && ownerName.length() <= 25;
     }
 
     public static boolean isValidOwnerPhone(String ownerPhone) {
-        if (ownerPhone == null) {
-            return false;
-        }
+        if (ownerPhone == null) return false;
 
         return PHONE_PATTERN.matcher(ownerPhone).matches();
     }
 
     public static boolean isValidBrand(String brand) {
-        if (brand == null) {
-            return false;
-        }
-
-        if (brand.isBlank()) {
-            return false;
-        }
+        if (brand == null) return false;
+        if (brand.isBlank()) return false;
 
         return 5 <= brand.length() && brand.length() <= 12;
-    }
-
-    public static boolean isValidPrice(int price) {
-        return price > 999;
     }
 
     public static boolean isValidRegistrationDate(String registrationDate) {

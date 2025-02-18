@@ -7,12 +7,12 @@ public class Car {
     private String ownerName;
     private String ownerPhone;
     private String brand;
-    private int price;
+    private Long price;
     private LocalDate registrationDate;
     private String registrationPlace;
     private int seatCount;
 
-    public Car(String licensePlate, String ownerName, String ownerPhone, String brand, int price, LocalDate registrationDate, String registrationPlace, int seatCount) {
+    public Car(String licensePlate, String ownerName, String ownerPhone, String brand, Long price, LocalDate registrationDate, String registrationPlace, int seatCount) {
         this.licensePlate = licensePlate;
         this.ownerName = ownerName;
         this.ownerPhone = ownerPhone;
@@ -55,11 +55,11 @@ public class Car {
         this.brand = brand;
     }
 
-    public int getPrice() {
+    public Long getPrice() {
         return price;
     }
 
-    public void setPrice(int price) {
+    public void setPrice(Long price) {
         this.price = price;
     }
 
