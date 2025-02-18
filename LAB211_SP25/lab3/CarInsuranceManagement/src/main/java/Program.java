@@ -1,5 +1,10 @@
+import config.RegionConfig;
+
+import java.util.Map;
+
 public class Program {
     public static void main(String[] args) {
-        System.out.println("Hello, world!");
+        RegionConfig regionConfig = new RegionConfig();
+        System.out.println(regionConfig.getRegion("F0"));
     }
 }

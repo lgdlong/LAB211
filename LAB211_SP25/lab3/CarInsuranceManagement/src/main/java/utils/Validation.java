@@ -3,7 +3,6 @@ package utils;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.Map;
 import java.util.regex.Pattern;
 
 public class Validation {
@@ -15,35 +14,10 @@ public class Validation {
                     "099|059|" +  // Gmobile
                     "024|028)\\d{7}$";
 
+
+
     private static final String LICENSE_PLATE_REGEX = "5[0-9]{1}[A-Z]{1}[1-9]{1}[0-9]{5}";
     private static final Pattern PHONE_PATTERN = Pattern.compile(VIETNAM_MOBILE_REGEX);
-
-//    private static final Map<String[], String> REGIONS = Map.of(
-//            new String[]{"T1", "T2"}, "Quận 1",
-//            new String[]{"B1"}, "Quận 2",
-//            new String[]{"F1", "F2"}, "Quận 3",
-//            new String[]{"C1"}, "Quận 4",
-//            new String[]{"H1"}, "Quận 5",
-//            new String[]{"K1", "K2"}, "Quận 6",
-//            new String[]{"C2"}, "Quận 7",
-//            new String[]{"L1", "L2"}, "Quận 8",
-//            new String[]{"X1"}, "Quận 9",
-//            new String[]{"U1", "U2"}, "Quận 10",
-//            new String[]{"M1", "M2"}, "Quận 11",
-//            new String[]{"G1", "G2"}, "Quận 12",
-//            new String[]{"D1"}, "Tân Phú",
-//            new String[]{"E1"}, "Phú Nhuận",
-//            new String[]{"N1", "N2"}, "Bình Tân",
-//            new String[]{"P1", "P2"}, "Tân Bình",
-//            new String[]{"S1", "S2", "S3"}, "Bình Thạnh",
-//            new String[]{"V1", "V2", "V3"}, "Gò Vấp",
-//            new String[]{"X2", "X3"}, "Thủ Đức",
-//            new String[]{"N2", "N3"}, "Huyện Bình Chánh",
-//            new String[]{"Z2"}, "Huyện Cần Giờ",
-//            new String[]{"Z1"}, "Huyện Nhà Bè",
-//            new String[]{"Y1"}, "Huyện Hóc Môn",
-//            new String[]{"Y2", "Y3"}, "Huyện Củ Chi"
-//    );
 
     public static boolean isValidLicensePlate(String licensePlate) {
         if (licensePlate == null || licensePlate.isBlank()) {
@@ -96,12 +70,12 @@ public class Validation {
         return price > 999;
     }
 
-    public static boolean isValidRegistrationPlace(String registrationPlace) {
-        if (registrationPlace == null) {
+    public static boolean isValidRegistrationDate(String registrationDate) {
+        if (registrationDate == null) {
             return false;
         }
         try {
-            LocalDate date = LocalDate.parse(registrationPlace, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
+            LocalDate date = LocalDate.parse(registrationDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
             return date.isBefore(LocalDate.now());
         } catch (DateTimeParseException e) {
             return false;
