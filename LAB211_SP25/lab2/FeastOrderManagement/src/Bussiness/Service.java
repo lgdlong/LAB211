@@ -6,15 +6,12 @@ import Model.Customer;
 import Model.Order;
 import Repository.*;
 import Utils.InputData;
-import static Utils.InputData.inputCusCode;
-import static Utils.InputData.inputEmail;
-import static Utils.InputData.inputName;
-import static Utils.InputData.inputPhone;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Scanner;
+
 
 /**
  *
@@ -30,10 +27,10 @@ public class Service {
         
         while (true) {
             // ENter information
-            String code = inputCusCode("Enter code: ");
-            String name = inputName("Enter name: ");
-            String phone = inputPhone("Enter phone: ");
-            String email = inputEmail("Enter email: ");
+            String code = InputData.inputCusCode("Enter code: ");
+            String name = InputData.inputName("Enter name: ");
+            String phone = InputData.inputPhone("Enter phone: ");
+            String email = InputData.inputEmail("Enter email: ");
             
             customer = new Customer(code, name, email, phone);
             
