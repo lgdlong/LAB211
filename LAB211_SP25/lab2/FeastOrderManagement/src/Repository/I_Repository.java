@@ -7,5 +7,4 @@ package Repository;
  */
 public interface I_Repository<T> {
     boolean add(T item);
-    void display();
 }

@@ -12,6 +12,18 @@ public class Car {
     private String registrationPlace;
     private int seatCount;
 
+    // constructor to create new car
+    public Car(String licensePlate, String ownerName, String ownerPhone, String brand, Long price, LocalDate registrationDate, int seatCount) {
+        this.licensePlate = licensePlate;
+        this.ownerName = ownerName;
+        this.ownerPhone = ownerPhone;
+        this.brand = brand;
+        this.price = price;
+        this.registrationDate = registrationDate;
+        this.registrationPlace = getRegistrationPlace();
+        this.seatCount = seatCount;
+    }
+    // Constructor to get all data from the database
     public Car(String licensePlate, String ownerName, String ownerPhone, String brand, Long price, LocalDate registrationDate, String registrationPlace, int seatCount) {
         this.licensePlate = licensePlate;
         this.ownerName = ownerName;
@@ -72,6 +84,7 @@ public class Car {
     }
 
     public String getRegistrationPlace() {
+        licensePlate = licensePlate.substring(0, 2) + "-" + licensePlate.substring(2, 5) + "." + licensePlate.substring(5, 7);
         return registrationPlace;
     }
 

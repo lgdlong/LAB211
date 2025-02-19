@@ -10,7 +10,7 @@ import java.util.Optional;
  *
  * @author LGD
  */
-public class OrderRepository implements I_Repository<Order>{
+public class OrderRepository implements IOrderRepository{
     
     List<Order> orderList = null;
     
@@ -36,11 +36,20 @@ public class OrderRepository implements I_Repository<Order>{
     }
 
     @Override
-    public void display() {
-        if (orderList.isEmpty()) {
-            System.out.println("There is no order to display.");
+    public boolean update(Order oldOrder, Order newOrder) {
+        if (newOrder == null || oldOrder == null || orderList == null) {
+            System.out.println("Order cannot be null!");
+            return false;
         }
-        orderList.forEach(System.out::println);
+
+        int index = orderList.indexOf(oldOrder);
+        if (index == -1) {
+            System.out.println("Old order not found!");
+            return false;
+        }
+
+        orderList.set(index, newOrder);
+        return true;
     }
     
     public Order getById(String id) {

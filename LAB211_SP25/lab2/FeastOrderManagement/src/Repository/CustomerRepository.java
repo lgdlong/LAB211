@@ -10,7 +10,7 @@ import java.util.Optional;
  *
  * @author LGD
  */
-public class CustomerRepository implements I_Repository<Customer>{
+public class CustomerRepository implements ICustomerRepository{
     List<Customer> cusList = null;
     
     public CustomerRepository() {
@@ -38,12 +38,36 @@ public class CustomerRepository implements I_Repository<Customer>{
         return cusList.add(item);
     }
 
+
+    /**
+     * Updates an existing customer in the customer repository.
+     *
+     * @param updatedCustomer The customer object with updated information.
+     * @return {@code true} if the customer is found and updated successfully, otherwise {@code false}.
+     *         Returns {@code false} if the input is null, the list is empty, or the customer is not found.
+     */
     @Override
-    public void display() {
-        if (cusList.isEmpty()) {
-            System.out.println("There is no customer to display.");
+    public boolean update(Customer updatedCustomer) {
+        if (updatedCustomer == null) {
+            System.out.println("Customer cannot be null!");
+            return false;
         }
-        cusList.forEach(System.out::println);
+
+        List<Customer> customers = cusList;
+        if (customers.isEmpty()) {
+            System.out.println("Customer list is empty!");
+            return false;
+        }
+
+        for (int i = 0; i < customers.size(); i++) {
+            if (customers.get(i).getCode().equals(updatedCustomer.getCode())) {
+                customers.set(i, updatedCustomer);
+                return true;
+            }
+        }
+
+        System.out.println("Customer not found!");
+        return false;
     }
 
     public Customer getByCode(String code) {

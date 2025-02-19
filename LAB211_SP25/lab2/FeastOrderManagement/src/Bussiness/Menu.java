@@ -1,6 +1,6 @@
-package Utils;
+package Bussiness;
 
-import Bussiness.Service;
+import Utils.InputData;
 
 /**
  *
@@ -55,7 +55,7 @@ public class Menu {
             switch (choice) {
                 case 1 -> service.displayCustomerList();
                 case 2 -> service.displayOrderList();
-                case 0 -> mainMenu();
+                case 0 -> {break;}
                 default -> throw new AssertionError();
             }
             

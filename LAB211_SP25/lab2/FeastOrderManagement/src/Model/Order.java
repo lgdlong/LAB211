@@ -1,6 +1,8 @@
 package Model;
 
 import Repository.FeastRepository;
+import Repository.IFeastRepository;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
@@ -29,7 +31,7 @@ public class Order {
     }
 
     // constructor to create object
-    public Order(String customerCode, String feastCode, int numberOfTables, LocalDate date, FeastRepository fr) {
+    public Order(String customerCode, String feastCode, int numberOfTables, LocalDate date, IFeastRepository fr) {
         this.customerCode = customerCode;
         this.feastCode = feastCode;
         this.date = date;
@@ -86,7 +88,7 @@ public class Order {
         return totalCost;
     }
 
-    public void setTotalCost(double totalCost, FeastRepository fr) {
+    public void setTotalCost(double totalCost, IFeastRepository fr) {
         this.totalCost = numberOfTables * getPriceByFeastCode(feastCode, fr);
     }
     
@@ -95,7 +97,7 @@ public class Order {
         return String.format("%-22s | %-11s | %-10s | %-10s | %-6d | %-12.2f", id, date, customerCode, feastCode, numberOfTables, totalCost);
     }
 
-    private double getPriceByFeastCode(String code, FeastRepository fr) {
+    private double getPriceByFeastCode(String code, IFeastRepository fr) {
         for (Feast f : fr.getFeastList()) {
             if (f.getCode().equalsIgnoreCase(code)) {
                 return f.getPrice();

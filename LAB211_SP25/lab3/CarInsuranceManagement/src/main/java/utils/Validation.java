@@ -53,6 +53,10 @@ public class Validation {
         return 5 <= brand.length() && brand.length() <= 12;
     }
 
+    /**
+     * The day must before the current day
+     * Using the format "yyyy-MM-dd"
+     */
     public static boolean isValidRegistrationDate(String registrationDate) {
         if (registrationDate == null) {
             return false;
@@ -65,7 +69,7 @@ public class Validation {
         }
     }
 
-    public static boolean isValidSeatCount(String seatCount) {
-        return seatCount.matches("[1-9][0-9]*");
+    public static boolean isValidSeatCount(int seatCount) {
+        return 4 <= seatCount && seatCount <= 36;
     }
 }

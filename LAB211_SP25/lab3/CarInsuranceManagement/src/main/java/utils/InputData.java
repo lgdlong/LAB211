@@ -1,6 +1,7 @@
 package utils;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeParseException;
 import java.util.Scanner;
 
 public class InputData {
@@ -68,7 +69,32 @@ public class InputData {
 
     public static LocalDate inputRegistrationDate(String prompt) {
         while (true) {
+            System.out.print(prompt);
+            String registrationDate = scanner.nextLine().trim();
+            if (Validation.isValidRegistrationDate(registrationDate)) {
+                try {
+                    return LocalDate.parse(registrationDate); // Return valid input immediately
+                } catch (DateTimeParseException e) {
+                    System.out.println(Color.ANSI_YELLOW + "⚠ Invalid date format. Please enter the date in the correct format (e.g., YYYY-MM-DD)." + Color.ANSI_RESET);
+                }
+            }
+            System.out.println(Color.ANSI_YELLOW + "⚠ Registration date must be in the past." + Color.ANSI_RESET);
+        }
+    }
 
+    public static int inputSeatCount(String prompt) {
+        while (true) {
+            System.out.print(prompt);
+            String input = scanner.nextLine().trim();
+            try {
+                int seatCount = Integer.parseInt(input);
+                if (Validation.isValidSeatCount(seatCount)) {
+                    return seatCount;
+                }
+                System.out.println(Color.ANSI_YELLOW + "⚠ Seat count must be a positive number." + Color.ANSI_RESET);
+            } catch (NumberFormatException e) {
+                System.out.println(Color.ANSI_YELLOW + "⚠ Invalid input. Please enter a valid number." + Color.ANSI_RESET);
+            }
         }
     }
 }

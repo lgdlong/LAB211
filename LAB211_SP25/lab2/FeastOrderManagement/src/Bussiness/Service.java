@@ -4,9 +4,7 @@ import Dao.CustomerDao;
 import Dao.OrderDao;
 import Model.Customer;
 import Model.Order;
-import Repository.CustomerRepository;
-import Repository.FeastRepository;
-import Repository.OrderRepository;
+import Repository.*;
 import Utils.InputData;
 import static Utils.InputData.inputCusCode;
 import static Utils.InputData.inputEmail;
@@ -23,9 +21,9 @@ import java.util.Scanner;
  * @author LGD
  */
 public class Service {
-    CustomerRepository cusRepo = new CustomerRepository();
-    FeastRepository feastRepo = new FeastRepository();
-    OrderRepository orderRepo = new OrderRepository();
+    ICustomerRepository cusRepo = new CustomerRepository();
+    IFeastRepository feastRepo = new FeastRepository();
+    IOrderRepository orderRepo = new OrderRepository();
     
     public void registerCustomer() {
         Customer customer;
@@ -77,7 +75,7 @@ public class Service {
                     newPhone.isBlank() ? updateCus.getPhone() : newPhone
             );
         
-            if (!update(newCustomer)) {
+            if (!cusRepo.update(newCustomer)) {
                 System.out.println("Update customer " + newCustomer.getCode() + " FAIL.");
             }
         }
@@ -154,7 +152,7 @@ public class Service {
             );
 
             // Save updated order
-            if (!update(order, newOrder)) {
+            if (!orderRepo.update(order, newOrder)) {
                 System.out.println("Update order " + order.getId() + " FAIL.");
             }
         }
@@ -175,19 +173,29 @@ public class Service {
     }
     
     public void displayCustomerList() {
+        if (cusRepo.getCusList().isEmpty()) {
+            System.out.println("Customer list is empty.");
+            return;
+        }
         displayCustomerHeader();
-        cusRepo.display();
+        cusRepo.getCusList().forEach(System.out::println);
     }
     
     public void displayOrderList() {
-        displayOrderHeader();
-        for (Order o : orderRepo.getOrderList()) {
-            System.out.println(o);
+        if (orderRepo.getOrderList().isEmpty()) {
+            System.out.println("Order list is empty.");
+            return;
         }
+        displayOrderHeader();
+        orderRepo.getOrderList().forEach(System.out::println);
     }
     
     public void displayFeast() {
-        feastRepo.display();
+        if (feastRepo.getFeastList().isEmpty()) {
+            System.out.println("Feast list is empty.");
+            return;
+        }
+        feastRepo.getFeastList().forEach(System.out::println);
     }
     
     private void displayCustomerHeader() {
@@ -197,46 +205,6 @@ public class Service {
     private void displayOrderHeader() {
         System.out.printf("%-22s | %-11s | %-10s | %-10s | %-6s | %-12s\n", 
                 "ID", "Customer ID", "Set Menu", "Price", "Tables", "Total Cost");
-    }
-
-    /**
-     * Updates an existing customer in the customer repository.
-     *
-     * @param updatedCustomer The customer object with updated information.
-     * @return {@code true} if the customer is found and updated successfully, otherwise {@code false}.
-     *         Returns {@code false} if the input is null, the list is empty, or the customer is not found.
-     */
-    private boolean update(Customer updatedCustomer) {
-        if (updatedCustomer == null) {
-            System.out.println("Customer cannot be null!");
-            return false;
-        }
-
-        List<Customer> customers = cusRepo.getCusList();
-        if (customers.isEmpty()) {
-            System.out.println("Customer list is empty!");
-            return false;
-        }
-
-        for (int i = 0; i < customers.size(); i++) {
-            if (customers.get(i).getCode().equals(updatedCustomer.getCode())) {
-                customers.set(i, updatedCustomer);
-                return true;
-            }
-        }
-
-        System.out.println("Customer not found!");
-        return false;
-    }
-
-    private boolean update(Order oldOrder, Order newOrder) {
-        if (newOrder == null) {
-            System.out.println("Order cannot be null!");
-            return false;
-        }
-        
-        // it may throw exception, I don't know :)
-        return orderRepo.add(newOrder) && orderRepo.getOrderList().remove(oldOrder);
     }
     
     private LocalDate toLocalDate(String strDate) throws DateTimeParseException {
