@@ -2,6 +2,8 @@ package Repository;
 
 import Dao.FeastDao;
 import Model.Feast;
+import Repository.Interface.IFeastRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +12,7 @@ import java.util.Optional;
  *
  * @author LGD
  */
-public class FeastRepository implements IFeastRepository{
+public class FeastRepository implements IFeastRepository {
     List<Feast> feastList = null;
     
     public FeastRepository() {

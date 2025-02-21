@@ -1,8 +1,12 @@
 package utils;
 
+import entity.model.Insurance;
+import repository.InsuranceRepository;
+
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.List;
 import java.util.regex.Pattern;
 
 public class Validation {
@@ -14,23 +18,24 @@ public class Validation {
                     "099|059|" +  // Gmobile
                     "024|028)\\d{7}$";
 
-    private static final String LICENSE_PLATE_REGEX = "5[0-9]{1}[A-Z]{1}[1-9]{1}[0-9]{5}";
+    private static final String LICENSE_PLATE_REGEX = "5[0-9][A-Z][0-9]{6}";
 
     private static final Pattern PHONE_PATTERN = Pattern.compile(VIETNAM_MOBILE_REGEX);
+
+    public static boolean isValidId(String id) {
+        if (id == null || id.isBlank()) {
+            return false;
+        }
+
+        return id.length() == 4;
+    }
 
     public static boolean isValidLicensePlate(String licensePlate) {
         if (licensePlate == null || licensePlate.isBlank()) {
             return false;
         }
 
-
-
-        boolean firstTwoDigitsRequire = 50 <= Integer.parseInt(licensePlate.substring(0, 2)) && Integer.parseInt(licensePlate.substring(0, 2)) <= 59;
-
-//        if ()
-
-        return licensePlate.matches("[0-9]{2}[A-Z]{1}-[0-9]{3}.[0-9]{2}");
-//        return licensePlate.matches("[0-9]{2}[A-Z]{1}-[0-9]{3}.[0-9]{2}");
+        return licensePlate.matches(LICENSE_PLATE_REGEX);
     }
 
     public static boolean isValidOwnerName(String ownerName) {
@@ -53,23 +58,16 @@ public class Validation {
         return 5 <= brand.length() && brand.length() <= 12;
     }
 
-    /**
-     * The day must before the current day
-     * Using the format "yyyy-MM-dd"
-     */
-    public static boolean isValidRegistrationDate(String registrationDate) {
-        if (registrationDate == null) {
-            return false;
-        }
-        try {
-            LocalDate date = LocalDate.parse(registrationDate, DateTimeFormatter.ofPattern("yyyy-MM-dd"));
-            return date.isBefore(LocalDate.now());
-        } catch (DateTimeParseException e) {
-            return false;
-        }
-    }
-
     public static boolean isValidSeatCount(int seatCount) {
         return 4 <= seatCount && seatCount <= 36;
+    }
+
+    public static boolean isInsured(InsuranceRepository insuranceRepository, String licensePlate) {
+        for (Insurance i : insuranceRepository.getInsuranceRepo()) {
+            if (i.getLicensePlate().equalsIgnoreCase(licensePlate)) {
+                return true;
+            }
+        }
+        return false;
     }
 }

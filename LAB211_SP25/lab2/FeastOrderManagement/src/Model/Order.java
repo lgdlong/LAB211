@@ -1,7 +1,6 @@
 package Model;
 
-import Repository.FeastRepository;
-import Repository.IFeastRepository;
+import Repository.Interface.IFeastRepository;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;

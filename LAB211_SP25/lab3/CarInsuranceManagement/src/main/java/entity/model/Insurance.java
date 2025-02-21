@@ -7,10 +7,10 @@ public class Insurance {
     private String licensePlate;
     private LocalDate establishedDate;
     private int period;
-    private int fee;
+    private double fee;
     private String ownerName;
 
-    public Insurance(String id, String licensePlate, LocalDate establishedDate, int period, int fee, String ownerName) {
+    public Insurance(String id, String licensePlate, LocalDate establishedDate, int period, double fee, String ownerName) {
         this.id = id;
         this.licensePlate = licensePlate;
         this.establishedDate = establishedDate;
@@ -51,11 +51,11 @@ public class Insurance {
         this.period = period;
     }
 
-    public int getFee() {
+    public double getFee() {
         return fee;
     }
 
-    public void setFee(int fee) {
+    public void setFee(double fee) {
         this.fee = fee;
     }
 
@@ -65,5 +65,17 @@ public class Insurance {
 
     public void setOwnerName(String ownerName) {
         this.ownerName = ownerName;
+    }
+
+    @Override
+    public String toString() {
+        return "Insurance{" +
+                "id='" + id + '\'' +
+                ", licensePlate='" + licensePlate + '\'' +
+                ", establishedDate=" + establishedDate +
+                ", period=" + period +
+                ", fee=" + fee +
+                ", ownerName='" + ownerName + '\'' +
+                '}';
     }
 }

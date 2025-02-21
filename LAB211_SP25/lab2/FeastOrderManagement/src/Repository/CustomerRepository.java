@@ -2,6 +2,8 @@ package Repository;
 
 import Dao.CustomerDao;
 import Model.Customer;
+import Repository.Interface.ICustomerRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +12,7 @@ import java.util.Optional;
  *
  * @author LGD
  */
-public class CustomerRepository implements ICustomerRepository{
+public class CustomerRepository implements ICustomerRepository {
     List<Customer> cusList = null;
     
     public CustomerRepository() {

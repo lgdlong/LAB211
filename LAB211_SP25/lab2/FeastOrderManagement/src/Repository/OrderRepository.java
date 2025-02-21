@@ -2,6 +2,8 @@ package Repository;
 
 import Dao.OrderDao;
 import Model.Order;
+import Repository.Interface.IOrderRepository;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -10,7 +12,7 @@ import java.util.Optional;
  *
  * @author LGD
  */
-public class OrderRepository implements IOrderRepository{
+public class OrderRepository implements IOrderRepository {
     
     List<Order> orderList = null;
     

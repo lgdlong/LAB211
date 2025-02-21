@@ -1,8 +1,10 @@
 package entity.model;
 
+import config.RegionConfig;
+
 import java.time.LocalDate;
 
-public class Car {
+public class Car implements Cloneable {
     private String licensePlate;
     private String ownerName;
     private String ownerPhone;
@@ -84,8 +86,8 @@ public class Car {
     }
 
     public String getRegistrationPlace() {
-        licensePlate = licensePlate.substring(0, 2) + "-" + licensePlate.substring(2, 5) + "." + licensePlate.substring(5, 7);
-        return registrationPlace;
+        RegionConfig regionConfig = new RegionConfig();
+        return regionConfig.getRegion(licensePlate.substring(2, 3));
     }
 
     public void setRegistrationPlace(String registrationPlace) {
@@ -98,5 +100,29 @@ public class Car {
 
     public void setSeatCount(int seatCount) {
         this.seatCount = seatCount;
+    }
+
+    @Override
+    public String toString() {
+        return "Car{" +
+                "licensePlate='" + licensePlate + '\'' +
+                ", ownerName='" + ownerName + '\'' +
+                ", ownerPhone='" + ownerPhone + '\'' +
+                ", brand='" + brand + '\'' +
+                ", price=" + price +
+                ", registrationDate=" + registrationDate +
+                ", registrationPlace='" + registrationPlace + '\'' +
+                ", seatCount=" + seatCount +
+                '}';
+    }
+
+    @Override
+    public Car clone() {
+        try {
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return (Car) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
     }
 }
